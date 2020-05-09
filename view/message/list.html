@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>Prediction</title>
+{% include "template/head_css.html" %}
+
+<script>
+
+	$(document).ready(function(){
+
+
+		$('.selectall').click(function() {
+			if ($(this).is(':checked')) {
+				$('.check-box-field').prop('checked', true);
+			} else {
+				$('.check-box-field').prop('checked', false);
+			}
+		});
+
+		$('.mybtn1.delete').click(function(){
+			var array = [];
+			$('.check-box-field:checkbox:checked').each(function(){
+				array.push(this.getAttribute('data-idx'))
+			})
+			if (array.length==0){
+				alert('삭제할 쪽지를 선택해주세요.')
+			} else {
+
+				param={message_idx:array}
+
+				if ("{{ data_dic['type_idx'] }}"=="0"){
+					var final_url='/delete_message_pro'
+				} else if ("{{ data_dic['type_idx'] }}"=='1') {
+					var final_url='/delete_send_message_pro'
+				}
+
+				$.ajax({
+					traditional : true,
+					type : 'post',
+					url : final_url,
+					data : param,
+					dataType : 'text',
+					error: function(xhr, status, error){
+						alert(error);
+					},
+					success : function(result){
+						alert('쪽지가 삭제되었습니다.')
+						location.replace("/message_list/type={{ data_dic['type_idx'] }}/page={{ data_dic['now_page'] }}")
+					}
+				})
+
+			}
+
+		})
+
+	})
+</script>
+
+</head>
+<body>
+
+    {% include "template/preloader.html" %}
+    {% include "template/header.html" %}
+	
+	<section class="cart-area">
+		<div class="container">
+			{% if data_dic['type_idx']=="0" %}
+				<ul class="submenu">
+					<li class="select"><a href="/message_list/type=0">받은 쪽지</a></li>
+					<li class=""><a href="/message_list/type=1">보낸 쪽지</a></li>
+					<li class=""><a href="/message_write_origin">쪽지 쓰기</a></li>
+					<li class=""><a href="/message_write_random">랜덤 쪽지 쓰기</a></li>
+				</ul>
+			{% else %}
+				<ul class="submenu">
+					<li class=""><a href="/message_list/type=0">받은 쪽지</a></li>
+					<li class="select"><a href="/message_list/type=1">보낸 쪽지</a></li>
+					<li class=""><a href="/message_write_origin">쪽지 쓰기</a></li>
+					<li class=""><a href="/message_write_random">랜덤 쪽지 쓰기</a></li>
+				</ul>
+			{% endif %}
+
+
+			<button type="submit" class="mybtn1 delete">쪽지삭제</button>
+			<strong>받은 쪽지는 180일이 경과 후 자동 삭제됩니다.</strong>
+
+
+			<div class="row">
+				<div class="col-lg-12">
+
+					<div class="cart-table-area">
+						<div class="responsive-table">
+							<table class="table">
+								<thead>
+									<tr>
+										{% if data_dic['type_idx']=="0" %}
+										<th class='tb-checkbox' scope="col">
+											<input type="checkbox" class="selectall checkbox" id="input-terms">
+										</th>
+										<th scope="col">내용</th>
+										<th scope="col">보낸사람</th>
+										<th scope="col">상태</th>
+										<th scope="col">보낸시간</th>
+										{% else %}
+										<th class='tb-checkbox' scope="col">
+											<input type="checkbox" class="selectall checkbox" id="all-input-terms">
+										</th>
+										<th scope="col">내용</th>
+										<th scope="col">받은사람</th>
+										<th scope="col">상태</th>
+										<th scope="col">보낸시간</th>
+										{% endif %}
+									</tr>
+								</thead>
+								<tbody>
+
+									{% for temp_dic in data_list %}
+									<tr>
+										<td class='tb-checkbox'>
+											<input type="checkbox" data-idx="{{ temp_dic['message_idx'] }}" class="check-box-field" id="input-terms">
+										</td>
+
+										<td style='padding:0px 0px'>
+											<a href="/message_read/type={{ data_dic['type_idx'] }}/message={{ temp_dic['message_idx'] }}/page={{ data_dic['now_page'] }}">
+												<div style='padding:15px 12px'>
+													{{ temp_dic['message_text'] }}
+												</div>
+											</a>
+										</td>
+
+										<td>{{temp_dic['message_receiver_nic']}}</td>
+										<td>
+											{% if temp_dic['message_read']==0 %}
+												<i class="far fa-envelope-open">
+													안읽음
+												</i>
+											{% else %}
+												<i class="far fa-envelope">읽음</i>
+											{% endif %}
+										</td>
+										<td>{{ temp_dic['message_date'] }}</td>
+									</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+					<ul class="pagenation">
+						{% if data_dic['now_page']!=1 %}
+							{% if 1>data_dic['prev'] %}
+							<li class="ar">
+								<a href="/message_list/type={{data_dic['type_idx']}}/page={{data_dic['page_min']}}">
+									<i class="fas fa-arrow-left"></i>
+								</a>
+							</li>
+							{% else %}
+							<li class="ar">
+								<a href="/message_list/type={{data_dic['type_idx']}}/page={{data_dic['prev']}}">
+									<i class="fas fa-arrow-left"></i>
+								</a>
+							</li>
+							{% endif %}
+						{% endif %}
+
+						{% for page in range(data_dic['page_min'],data_dic['page_max']+1) %}
+							{% if page==data_dic['now_page'] %}
+							<li class='num on'>
+								<a href="/message_list/type={{data_dic['type_idx']}}/page={{page}}">
+									{{ page }}
+								</a>
+							</li>
+							{% else %}
+							<li class='num'>
+								<a href="/message_list/type={{data_dic['type_idx']}}/page={{page}}">
+									{{ page }}
+								</a>
+							</li>
+							{% endif %}
+						{% endfor %}
+						{% if data_dic['page_count']>data_dic['now_page'] %}
+							{% if data_dic['next']>data_dic['page_count'] %}
+							<li class="ar">
+								<a href="/message_list/type={{data_dic['type_idx']}}/page={{data_dic['page_max']}}">
+									<i class="fas fa-arrow-right"></i>
+								</a>
+							</li>
+							{% else %}
+							<li class="ar">
+								<a href="/message_list/type={{data_dic['type_idx']}}/page={{data_dic['next']}}">
+									<i class="fas fa-arrow-right"></i>
+								</a>
+							</li>
+							{% endif %}
+						{% endif %}
+					</ul>
+
+
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- 기본 하단 부분 -->
+	{% include "template/footer.html" %}
+	<!-- Footer Area End -->
+	<!-- Back to Top Start -->
+	<div class="bottomtotop">
+		<i class="fas fa-chevron-right"></i>
+	</div>
+	<!-- Back to Top End -->
+	<!-- Login Area Start -->
+	{% include "template/login.html" %}
+	<!-- Login Area End -->
+	{% include "template/jsloader.html" %}
+
+</body>
+</html>

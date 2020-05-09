@@ -1,0 +1,75 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<jsp:include page="template/head_css.jsp"/>
+
+
+</head>
+<body>
+	<jsp:include page="template/preloader.jsp" />
+	<jsp:include page="template/header.jsp" />
+
+	<!-- Get Start Area Start -->
+	<section class="signup-confirm-area">
+		<div class="container">
+			<div class="header-area">
+				<h4 class="title">1단계. 본인인증</h4>
+				<div class='content'>
+					<p class="font_em">
+						<strong>1. Prediction은 만18세 이상만 이용 가능한 서비스 입니다(어린이/청소년은
+							가입하실 수 없습니다)</strong>
+					</p>
+					<p>
+						<strong>2. 본인 명의 휴대폰을 소지한 국내 거주 외국인도 만 나이에 따른 회원 종류 선택 후
+							가입하실 수 있습니다.</strong>
+					</p>
+					<p>
+						<strong>3. 국내에서만 이용 가능한 서비스로 해외에 거주중인경우 가입하실 수 없습니다.</strong>
+					</p>
+					<p>
+						<strong>4. 본인인증 시 제공되는 정보는 해당 인증기관에서 직접 수집하며, 인증 이외의 용도로
+							수집 또는 이용하지 않습니다.</strong>
+					</p>
+				</div>
+			</div>
+
+			<!-- <div class='signupConfirm_link'>
+	      <a href="" onclick="" class="signupConfirm_mobile">휴대폰 인증</a>
+			</div> -->
+
+			<div class="features">
+				<a href="signup.jsp" onclick="">
+					<div class="single-feature">
+						<div class="icon two">
+							<img src="assets/images/feature/iconmonstr-smartphone-3-72.png"
+								alt="">
+						</div>
+						<div class="content">
+							<!-- <h4 class="title">
+								Provably Fair
+							</h4> -->
+							<span class="link">휴대폰 인증하기 <i class="fas fa-arrow-right"></i></span>
+						</div>
+					</div>
+
+				</a>
+			</div>
+
+
+		</div>
+	</section>
+	<!-- Get Start Area End -->
+
+	<jsp:include page="template/footer.jsp" />
+	<div class="bottomtotop">
+		<i class="fas fa-chevron-right"></i>
+	</div>
+	<jsp:include page="template/login.jsp" />
+	<jsp:include page="template/jsloader.jsp" />
+</body>
+</html>

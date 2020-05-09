@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+	{% include "template/head_css.html" %}
+</head>
+<body>
+
+    {% include "template/preloader.html" %}
+    {% include "template/header.html" %}
+
+
+	 
+	 <!-- Awards Area Start -->
+	 <section class="awards-area">
+		<div class="container">
+		  <ul class="submenu">
+			<li class="select"><a href="/find_id">은화 상점</a></li>
+			<li class=""><a href="/find_pw">마일리지 상점</a></li>
+		  </ul>
+
+
+		   <div class="row">
+			  <div class="col-lg-4 col-md-6">
+				 <div class="single-awards">
+					<div class="bonus_gold">
+						<!-- <img src="{{ url_for('static',filename='assets/images/금화.png') }}" alt="" width="20" height="20"> -->
+						보너스 골드 1000000
+					 </div>
+					<div class="content">
+					   <img src="assets/images/item/baseball.png"  width="150" height="150" alt="">
+					   <h4 class="title">
+						  야구공
+					   </h4>
+					   	<p>
+						<img src="{{ url_for('static',filename='assets/images/은화.png') }}" alt="" width="20" height="20">342 은화
+						</p>
+						<div>
+							스포츠 게임을 즐길 수 있는 야구공
+						</div>
+					   <a href="#" class="mybtn2">구매하기</a>
+					</div>
+				 </div>
+			  </div>
+
+			  <div class="col-lg-4 col-md-6">
+				<div class="single-awards">
+				   <div class="bonus_gold">
+					   <!-- <img src="{{ url_for('static',filename='assets/images/금화.png') }}" alt="" width="20" height="20"> -->
+					   보너스 골드 1000000
+					</div>
+				   <div class="content">
+					  <img src="assets/images/item/baseball.png"  width="150" height="150" alt="">
+					  <h4 class="title">
+						 야구공
+					  </h4>
+						  <p>
+					   <img src="{{ url_for('static',filename='assets/images/은화.png') }}" alt="" width="20" height="20">342 은화
+					   </p>
+					   <div>
+						   스포츠 게임을 즐길 수 있는 야구공
+					   </div>
+					  <a href="#" class="mybtn2">구매하기</a>
+				   </div>
+				</div>
+			 </div>
+
+
+			  <div class="col-lg-4 col-md-6">
+				 <div class="single-awards">
+					<div class="content">
+					   <img src="assets/images/awards/ic2.png" alt="">
+					   <h4 class="title">
+						  Zero Hunter
+					   </h4>
+					   <p>
+						  <i class="fas fa-users"></i>342
+					   </p>
+					   <a href="#" class="mybtn2">Read MOre</a>
+					</div>
+				 </div>
+			  </div>
+			  <div class="col-lg-4 col-md-6">
+				 <div class="single-awards">
+					<div class="content">
+					   <img src="assets/images/awards/ic3.png" alt="">
+					   <h4 class="title">
+						  BTC Top
+					   </h4>
+					   <p>
+						  <i class="fas fa-users"></i>342
+					   </p>
+					   <a href="#" class="mybtn2">Read MOre</a>
+					</div>
+				 </div>
+			  </div>
+			  <div class="col-lg-4 col-md-6">
+				 <div class="single-awards">
+					<div class="content">
+					   <img src="assets/images/awards/ic4.png" alt="">
+					   <h4 class="title">
+						  BTC King
+					   </h4>
+					   <p>
+						  <i class="fas fa-users"></i>342
+					   </p>
+					   <a href="#" class="mybtn2">Read MOre</a>
+					</div>
+				 </div>
+			  </div>
+			  <div class="col-lg-4 col-md-6">
+				 <div class="single-awards">
+					<div class="content">
+					   <img src="assets/images/awards/ic5.png" alt="">
+					   <h4 class="title">
+						  Money Bag
+					   </h4>
+					   <p>
+						  <i class="fas fa-users"></i>342
+					   </p>
+					   <a href="#" class="mybtn2">Read MOre</a>
+					</div>
+				 </div>
+			  </div>
+			  <div class="col-lg-4 col-md-6">
+				 <div class="single-awards">
+					<div class="content">
+					   <img src="assets/images/awards/ic6.png" alt="">
+					   <h4 class="title">
+						  BTC Top
+					   </h4>
+					   <p>
+						  <i class="fas fa-users"></i>342
+					   </p>
+					   <a href="#" class="mybtn2">Read MOre</a>
+					</div>
+				 </div>
+			  </div>
+
+			  <div class="col-lg-4 col-md-6">
+				<div class="single-awards">
+				   <div class="content">
+					  <img src="assets/images/awards/ic6.png" alt="">
+					  <h4 class="title">
+						 BTC Top
+					  </h4>
+					  <p>
+						 <i class="fas fa-users"></i>342
+					  </p>
+					  <a href="#" class="mybtn2">Read MOre</a>
+				   </div>
+				</div>
+			 </div>
+		   </div>
+		</div>
+	 </section>
+
+	{% include "template/footer.html" %}
+	<!-- Footer Area End -->
+	<!-- Back to Top Start -->
+	<div class="bottomtotop">
+		<i class="fas fa-chevron-right"></i>
+	</div>
+	<!-- Back to Top End -->
+	<!-- Login Area Start -->
+	{% include "template/login.html" %}
+	<!-- Login Area End -->
+	{% include "template/jsloader.html" %}
+
+</body>
+</html>

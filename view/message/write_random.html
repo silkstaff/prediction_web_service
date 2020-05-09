@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+{% include "template/head_css.html" %}
+
+<script>
+	$(document).ready(function(){
+		messageform=document.messageform
+
+		$("#mess_send_btn").click(function(){
+			var mess_text = $("#mess_text").val()
+			var regex1 = /^[\s]+$/
+
+			var item_selected = $('#item_select').children("option:selected").val()
+			if (item_selected==""){
+				alert('아이템을 선택해주세요')
+			} else if ((mess_text=="")|(regex1.test(mess_text))){
+				alert('내용을 입력해주세요')
+				$("#mess_text").focus()
+			} else {	
+				var count = item_selected.match(/\d/g).join("")
+
+				param = {count:count,
+						item_name:item_selected,
+						mess_text:mess_text}
+				$.ajax({
+					type : 'post',
+					url : '/random_message_pro',
+					data : param,
+					dataType : 'text',
+					error: function(xhr, status, error){
+						alert(error);
+					},
+					success : function(result){
+						if (result.trim()=="OK"){
+							alert('랜덤 쪽지 작성이 완료되었습니다.')
+							location.replace('/message_list/type=1')
+						}
+					}
+				})
+
+			}
+		})
+	})
+
+	var position = "{{ session['login'] }}"
+	if (position != "YES"){
+		alert('로그인이 필요합니다.');
+		window.location='/'
+	}
+</script>
+
+</head>
+<body>
+	<!-- 기본 상단 부분 -->
+	{% include "template/preloader.html" %}
+    {% include "template/header.html" %}
+
+	<section class="cart-area">
+		<div class="container">
+			<form name="messageform" id="messageform" action="/send_message_pro" method="POST">
+
+				<ul class="submenu">
+					<li class=""><a href="/message_list/type=0">받은 쪽지</a></li>
+					<li class=""><a href="/message_list/type=1">보낸 쪽지</a></li>
+					<li class=""><a href="/message_write_origin">쪽지 쓰기</a></li>
+					<li class="select"><a href="/message_write_random">랜덤 쪽지 쓰기</a></li>
+				</ul>
+
+				<table class="board_write">
+						<tbody>
+						<tr>
+							<th>내용</th>
+							<td>
+								<select id='item_select' style="margin:20px 10px;">
+									<option value="" selected disabled hidden>아이템 선택</option>
+									{% for item in message_item_list %}
+										<option value="{{ item[1] }}">{{ item[1] }}</option>
+									{% endfor %}
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<th>내용</th>
+							<td>
+								<textarea autocomplete="off" maxlength="1000" name="mess_text" id="mess_text" cols="" rows="" class="" style="width:98%; height:500px; padding:10px; margin:10px;"></textarea>
+							</td>
+						</tr>
+						</tbody>
+				</table>
+
+				<div class='center-btn'>
+					<a href="#" class="mybtn1"> 취소</a>
+					<button type="button" class="mybtn1" id='mess_send_btn'> 보내기</button>
+				</div>
+			</form>
+		</div>
+	</section>
+
+
+
+	<!-- 기본 하단 부분 -->
+	{% include "template/footer.html" %}
+	<!-- Footer Area End -->
+	<!-- Back to Top Start -->
+	<div class="bottomtotop">
+		<i class="fas fa-chevron-right"></i>
+	</div>
+	<!-- Back to Top End -->
+	<!-- Login Area Start -->
+	{% include "template/login.html" %}
+	<!-- Login Area End -->
+	{% include "template/jsloader.html" %}
+
+</body>
+</html>

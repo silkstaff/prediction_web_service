@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+{% include "template/head_css.html" %}
+<script>
+	function condition_nic(nic){
+        var regex1 = /^[A-Za-zㄱ-ㅎㅏ-ㅣ가-힣0-9]+$/
+        con1 = (nic.length>=3)&(nic.length<=12)
+        con2 = regex1.test(nic)
+        return con1 & con2
+    }
+
+    is_nick_change_intent = false
+    is_pw_change_intent = false
+
+    is_nick_check = false
+	is_pw_check = false
+	is_pwcheck_check = false
+
+    function change_member_info(){
+        if ((is_nick_change_intent)|(is_pw_change_intent)){
+            if ((is_nick_change_intent)&(is_pw_change_intent)){
+                if ((is_nick_check)&(is_pw_check)&(is_pwcheck_check)){
+                    
+                    $.ajax({
+                        type:'post',
+                        url:'/use_change_nickname',
+                        data: {change_nickname:$("#input-nickname").val()},
+                        dataType: 'text',
+                        success: function(result) {
+                            if (result.trim()!='OK'){
+                                alert('닉네임 변경권이 존재하지 않습니다.')
+                            } else {
+
+                                $.ajax({
+                                    type:'post',
+                                    url:'/change_password',
+                                    data: {password:$("#input-pw").val()},
+                                    dataType: 'text',
+                                    success: function(result) {
+                                        if (result.trim()=='OK'){
+                                            alert('변경되었습니다.')
+                                            location.replace('/')
+                                        } else {
+                                            alert('오류입니다. 고객센터에 문의해주세요.')
+                                        }
+                                    },
+                                    error: function(xhr, status, error){
+                                        alert(error)
+                                    }
+                                })
+                            }
+                        },
+                        error: function(xhr, status, error){
+                            alert(error)
+                        }
+                    })
+
+                } else {
+                    alert('닉네임 중복확인, 혹은 비밀번호 확인을 해주세요.')
+                }
+            } else if (is_nick_change_intent){
+                if (is_nick_check){
+                    $.ajax({
+                        type:'post',
+                        url:'/use_change_nickname',
+                        data: {change_nickname:$("#input-nickname").val()},
+                        dataType: 'text',
+                        success: function(result) {
+                            if (result.trim()!='OK'){
+                                alert('아이템이 없습니다.')
+                            } else {
+                                alert('변경되었습니다.')
+                                location.replace('/')
+                            }
+                        },
+                        error: function(xhr, status, error){
+                            alert(error)
+                        }
+                    })
+
+
+
+                } else {
+                    alert('닉네임 중복확인을 해주세요.')
+                }
+
+            } else if (is_pw_change_intent){
+                if ((is_pw_check)&(is_pwcheck_check)){
+
+
+                    $.ajax({
+                        type:'post',
+                        url:'/change_password',
+                        data: {password:$("#input-pw").val()},
+                        dataType: 'text',
+                        success: function(result) {
+                            if (result.trim()=='OK'){
+                                alert('변경되었습니다.')
+                                location.replace('/')
+                            } else {
+                                alert('오류입니다. 고객센터에 문의해주세요.')
+                            }
+                        },
+                        error: function(xhr, status, error){
+                            alert(error)
+                        }
+                    })
+
+
+                } else {
+                    alert('비밀번호 확인을 해주세요.')
+                }
+            }
+        } else {
+            alert('수정할 회원정보를 입력하고 클릭해주세요.')
+        }
+    }
+
+    function real_time_nickname_change(){
+        is_nick_change_intent = true
+        is_nick_check = false
+
+        if ($("#input-nickname").val()=="{{ session['user_nickname'] }}"){
+            is_nick_change_intent = false
+            document.getElementById("nick_btn").disabled = true
+        } else {
+            document.getElementById("nick_btn").disabled = false
+            is_nick_change_intent = true
+        }
+    }
+
+
+    function nickchange_check() {
+		user_nick = $('#input-nickname').val()
+		param = {user_nick:user_nick}
+
+		$.ajax({
+			type:'post',
+			url:'/check_user_nick',
+			data: param,
+            dataType: 'text',
+            success: function(result) {
+					if (!condition_nic(user_nick)){
+						alert('닉네임은 3글자 이상, 영문 혹은 한글')
+						$("#input-nickname").val("{{session['user_nickname']}}")
+						$("#input-nickname").focus()
+                        document.getElementById("nick_btn").disabled = true
+                        is_nick_change_intent = false
+					} else if (result.trim() == 'YES') {
+                        alert('사용 가능한 닉네임입니다.')
+                        document.getElementById("nick_btn").disabled = true
+                        is_nick_check=true
+                    } else if (user_nick=="{{ session['user_nickname'] }}"){
+                        alert('현재 닉네임과 같습니다.')
+						$("#input-nickname").val("{{session['user_nickname']}}")
+                        $("#input-nickname").focus()
+                        document.getElementById("nick_btn").disabled = true
+                        is_nick_change_intent = false
+					} else {
+						alert('이미 존재하는 닉네임입니다.')
+						$("#input-nickname").val("{{session['user_nickname']}}")
+                        $("#input-nickname").focus()
+                        document.getElementById("nick_btn").disabled = true
+                        is_nick_change_intent = false
+                    }
+                }
+			})
+	}
+
+
+
+	function real_time_pwchange() {
+		is_pw_check = false
+        is_pw_change_intent=true
+		val = $("#input-pw").val()
+		j= condition_pw(val)
+		if (val == ''){
+            is_pw_change_intent = false
+			document.getElementById("pw-warning").innerHTML = ''
+		} else if(j==0){
+			var regex1 = /^[A-Za-z0-9~!@#$%^&<>]+$/
+
+			if (val.length<8) {
+				document.getElementById("pw-warning").style.color='#ff344d'
+				document.getElementById("pw-warning").innerHTML = '8글자 이상 입력해주세요'
+			} else if (val.length>12){
+				document.getElementById("pw-warning").style.color='#ff344d'
+				document.getElementById("pw-warning").innerHTML = '12글자 이하로 입력해주세요'
+			} else if (regex1.test(val)) {
+				document.getElementById("pw-warning").style.color='#ff344d'
+				document.getElementById("pw-warning").innerHTML = '영문,숫자,특수문자(~!@#$%^&<>) 다 포함되어야 합니다.'
+			} else {
+				document.getElementById("pw-warning").style.color='#ff344d'
+				document.getElementById("pw-warning").innerHTML = '영문,숫자,특수문자(~!@#$%^&<>) 이외의 문자형태는 허용불가입니다.'
+			}
+		} else {
+			is_pw_check = true
+			document.getElementById("pw-warning").style.color='#a1aed4'
+			document.getElementById("pw-warning").innerHTML = '사용 가능한 비밀번호입니다.'
+		}
+	}
+	// 실시간으로 pw 확인에 대한 코멘트
+	function real_time_pwchangecheck() {
+		is_pwcheck_check = false
+		val_ori = $("#input-pw").val()
+		val_check = $("#input-pwcheck").val()
+		j= condition_pw(val_ori)
+		if (val_check == ''){
+			document.getElementById("pwcheck-warning").innerHTML = ''
+		} else if(j==0){
+			if (val_ori==''){
+				document.getElementById("pwcheck-warning").style.color='#ff344d'
+				document.getElementById("pwcheck-warning").innerHTML = '위에 비밀번호를 입력해주세요.'
+			} else {
+				document.getElementById("pwcheck-warning").style.color='#ff344d'
+				document.getElementById("pwcheck-warning").innerHTML = '위의 비밀번호가 조건에 맞지 않습니다. 비밀번호를 확인해주세요.'
+			}
+		} else if (val_check!=val_ori){
+			document.getElementById("pwcheck-warning").style.color='#ff344d'
+			document.getElementById("pwcheck-warning").innerHTML = '상단 비밀번호와 일치하지 않습니다.'
+		} else {
+			is_pwcheck_check = true
+			document.getElementById("pwcheck-warning").style.color='#a1aed4'
+			document.getElementById("pwcheck-warning").innerHTML = '사용 가능한 비밀번호입니다.'
+		}
+	}
+
+
+</script>
+</head>
+<body>
+    {% include "template/preloader.html" %}
+    {% include "template/header.html" %}
+	
+
+	<section class="my-info">
+		<div class="container">
+			<ul class="submenu">
+				<li class="select"><a href="/my_page">내정보</a></li>
+				<li class=""><a href="/my_inventory">인벤토리</a></li>
+				<li class=""><a href="/usage_history/type=0">은화</a></li>
+				<li class=""><a href="/usage_history/type=1">골드</a></li>
+				<li class=""><a href="/usage_history/type=2">마일리지</a></li>
+			</ul>
+			<div class="header-area">
+				<h4 class="title">내 정보</h4>
+			</div>
+
+			<div class="row">
+				<div class="col-lg-12">
+
+					<div class="my-info-table-area">
+						<div class="responsive-table">
+							<table class="table">
+								<tbody>
+									<tr>
+										<th>아이디</th>
+										<td>{{ user_info['user_id'] }}</td>
+									</tr>
+									<tr>
+										<th>닉네임</th>
+										<td>
+											<input type="nick" class="input-field" id="input-nickname" value="{{ user_info['user_nickname'] }}" style='float: left; width: 58%;' onkeyup="real_time_nickname_change()">
+                                            <button type="submit" class="mybtn3" id='nick_btn' disabled='disabled' style="margin-bottom:0; float: right; width: 40%;" onclick="nickchange_check()">중복확인</button>
+                                        </td>
+									</tr>
+									<tr>
+										<th>이름</th>
+										<td>{{ user_info['user_name'] }}</td>
+									</tr>
+									<tr>
+										<th>레벨</th>
+										<td>{{ user_info['user_lev'] }}</td>
+									</tr>
+									<tr>
+										<th>골드</th>
+										<td>{{ user_info['user_gold'] }}</td>
+									</tr>
+									<tr>
+										<th>은화</th>
+										<td>{{ user_info['user_silver'] }}</td>
+									</tr>
+									<tr>
+										<th>마일리지</th>
+										<td>{{ user_info['user_mil'] }}</td>
+									</tr>
+									<tr>
+										<th>비밀번호</th>
+										<td>
+                                            <input type="password" class="input-field" id="input-pw" placeholder="변경을 원하지 않을 시 공란" onkeyup="real_time_pwchange() ,real_time_pwchangecheck()">
+                                            <div class='warning' id='pw-warning'></div>
+                                        </td>
+									</tr>
+									<tr>
+										<th>비밀번호 확인</th>
+										<td>
+                                            <input type="password" class="input-field" id="input-pwcheck" placeholder="변경을 원하지 않을 시 공란" onkeyup="real_time_pwchangecheck()">
+                                            <div class='warning' id='pwcheck-warning'></div>
+                                        </td>
+									</tr>
+									<tr>
+										<th>실명인증 연장</th>
+										<td>
+											<span style='float: left; width: 58%;'>2020-02-21~2020-06-21</span>
+											<button onclick="window.location='/change_info_telephone';" class="mybtn3" style="margin-bottom:0; float: right; width: 40%;">
+												연장
+											</button>
+                                        </td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+
+				</div>
+			</div>
+			<div class='center-btn'>
+				<button onclick="change_member_info()" class="mybtn1"> 수정하기</button>
+			</div>
+		</div>
+	</section>
+
+
+
+	<!-- 기본 하단 부분 -->
+	{% include "template/footer.html" %}
+	<!-- Footer Area End -->
+	<!-- Back to Top Start -->
+	<div class="bottomtotop">
+		<i class="fas fa-chevron-right"></i>
+	</div>
+	<!-- Back to Top End -->
+	<!-- Login Area Start -->
+	{% include "template/login.html" %}
+	<!-- Login Area End -->
+	{% include "template/jsloader.html" %}
+
+
+</body>
+</html>

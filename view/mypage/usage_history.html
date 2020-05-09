@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+{% include "template/head_css.html" %}
+</head>
+<body>
+
+    {% include "template/preloader.html" %}
+    {% include "template/header.html" %}
+	
+	<section class="cart-area">
+		<div class="container">
+			{% if data_dic['type_idx']=="0" %} 
+			<ul class="submenu">
+				<li class=""><a href="/my_page">내정보</a></li>
+				<li class=""><a href="/my_inventory">인벤토리</a></li>
+				<li class="select"><a href="/usage_history/type=0">은화</a></li>
+				<li class=""><a href="/usage_history/type=1">골드</a></li>
+				<li class=""><a href="/usage_history/type=2">마일리지</a></li>
+			</ul>
+
+			{% elif data_dic['type_idx']=="1" %} 
+			<ul class="submenu">
+				<li class=""><a href="/my_page">내정보</a></li>
+				<li class=""><a href="/my_inventory">인벤토리</a></li>
+				<li class=""><a href="/usage_history/type=0">은화</a></li>
+				<li class="select"><a href="/usage_history/type=1">골드</a></li>
+				<li class=""><a href="/usage_history/type=2">마일리지</a></li>
+			</ul>
+
+			{% elif data_dic['type_idx']=="2" %} 
+			<ul class="submenu">
+				<li class=""><a href="/my_page">내정보</a></li>
+				<li class=""><a href="/my_inventory">인벤토리</a></li>
+				<li class=""><a href="/usage_history/type=0">은화</a></li>
+				<li class=""><a href="/usage_history/type=1">골드</a></li>
+				<li class="select"><a href="/usage_history/type=2">마일리지</a></li>
+			</ul>
+			{% endif %}
+			<div class="row">
+				<div class="col-lg-12">
+
+					<div class="cart-table-area">
+						<div class="responsive-table">
+							<table class="table">
+								<thead>
+									<tr>
+										<th scope="col">날짜</th>
+										<th scope="col">상세</th>
+										<th scope="col">액수</th>
+									</tr>
+								</thead>
+								
+								<tbody>
+
+
+									{% for data_list in usage_history %}
+									<tr>
+										<td>{{ data_list['date'].strftime('%Y-%m-%d') }}</td>
+										<td>
+										 {{data_list['detail']}}
+										</td>
+										<td>{{ data_list['price'] }}</td>
+									</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+					<ul class="pagenation">
+						{% if data_dic['now_page']!=1 %}
+							{% if 1>data_dic['prev'] %}
+							<li class="ar">
+								<a href="/usage_history/type={{ data_dic['type_idx'] }}/page={{data_dic['page_min']}}">
+									<i class="fas fa-arrow-left"></i>
+								</a>
+							</li>
+							{% else %}
+							<li class="ar">
+								<a href="/usage_history/type={{ data_dic['type_idx'] }}/page={{data_dic['prev']}}">
+									<i class="fas fa-arrow-left"></i>
+								</a>
+							</li>
+							{% endif %}
+						{% endif %}
+
+						{% for page in range(data_dic['page_min'],data_dic['page_max']+1) %}
+							{% if page==data_dic['now_page'] %}
+							<li class='num on'>
+								<a href="/usage_history/type={{ data_dic['type_idx'] }}/page={{page}}">
+									{{ page }}
+								</a>
+							</li>
+							{% else %}
+							<li class='num'>
+								<a href="/usage_history/type={{ data_dic['type_idx'] }}/page={{page}}">
+									{{ page }}
+								</a>
+							</li>
+							{% endif %}
+						{% endfor %}
+						{% if data_dic['page_count']>data_dic['now_page'] %}
+							{% if data_dic['next']>data_dic['page_count'] %}
+							<li class="ar">
+								<a href="/usage_history/type={{ data_dic['type_idx'] }}/page={{data_dic['page_max']}}">
+									<i class="fas fa-arrow-right"></i>
+								</a>
+							</li>
+							{% else %}
+							<li class="ar">
+								<a href="/usage_history/type={{ data_dic['type_idx'] }}/page={{data_dic['next']}}">
+									<i class="fas fa-arrow-right"></i>
+								</a>
+							</li>
+							{% endif %}
+						{% endif %}
+					</ul>
+				</div>
+			</div>
+
+
+
+		</div>
+	</section>
+
+	<!-- 기본 하단 부분 -->
+	{% include "template/footer.html" %}
+	<!-- Footer Area End -->
+	<!-- Back to Top Start -->
+	<div class="bottomtotop">
+		<i class="fas fa-chevron-right"></i>
+	</div>
+	<!-- Back to Top End -->
+	<!-- Login Area Start -->
+	{% include "template/login.html" %}
+	<!-- Login Area End -->
+	{% include "template/jsloader.html" %}
+
+
+</body>
+</html>

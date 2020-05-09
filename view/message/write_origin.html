@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+{% include "template/head_css.html" %}
+
+<script>
+	$(document).ready(function(){
+		messageform=document.messageform
+
+		$("#mess_send_btn").click(function(){
+			var receiver_nickname = $("#receiver_nickname").val()
+			var mess_text = $("#mess_text").val()
+			var regex1 = /^[\s]+$/
+
+			if ((receiver_nickname=="")|(regex1.test(receiver_nickname))){
+				alert('받을 사람을 입력해주세요')
+				$("#receiver_nickname").focus()
+			} else if ((mess_text=="")|(regex1.test(mess_text))){
+				alert('내용을 입력해주세요')
+				$("#mess_text").focus()
+			} else {
+				param = {receiver_nickname:receiver_nickname,
+						mess_text:mess_text}
+				$.ajax({
+					type : 'post',
+					url : '/send_message_pro',
+					data : param,
+					dataType : 'text',
+					error: function(xhr, status, error){
+						alert(error);
+					},
+					success : function(result){
+						if (result.trim()=="OK"){
+							alert('쪽지 작성이 완료되었습니다.')
+							location.replace('/message_list/type=1')
+						} else {
+							alert('닉네임을 확인해주세요')		
+							$("#receiver_nickname").val('')
+							$("#receiver_nickname").focus()
+						}
+					}
+				})
+
+			}
+		})
+	})
+
+	var position = "{{ session['login'] }}"
+	if (position != "YES"){
+		alert('로그인이 필요합니다.');
+		window.location='/'
+	}
+</script>
+
+</head>
+<body>
+	<!-- 기본 상단 부분 -->
+	{% include "template/preloader.html" %}
+    {% include "template/header.html" %}
+
+	<section class="cart-area">
+		<div class="container">
+			<form name="messageform" id="messageform" action="/send_message_pro" method="POST">
+
+				<ul class="submenu">
+					<li class=""><a href="/message_list/type=0">받은 쪽지</a></li>
+					<li class=""><a href="/message_list/type=1">보낸 쪽지</a></li>
+					<li class="select"><a href="/message_write_origin">쪽지 쓰기</a></li>
+					<li class=""><a href="/message_write_random">랜덤 쪽지 쓰기</a></li>
+				</ul>
+
+				<table class="board_write">
+						<tbody>
+						<tr>
+							<th>보낼 사람</th>
+							<td>
+								<input autocomplete="off" maxlength="25" name="receiver_nickname" id="receiver_nickname" type="text" style=" width:98%; padding:10px; margin:10px;" class="ipw">
+							</td>
+						</tr>
+						<tr>
+							<th>내용</th>
+							<td>
+								<textarea autocomplete="off" maxlength="1000" name="mess_text" id="mess_text" cols="" rows="" class="" style="width:98%; height:500px; padding:10px; margin:10px;"></textarea>
+							</td>
+						</tr>
+						</tbody>
+				</table>
+
+				<div class='center-btn'>
+					<a href="#" class="mybtn1"> 취소</a>
+					<button type="button" class="mybtn1" id='mess_send_btn'> 보내기</button>
+				</div>
+			</form>
+		</div>
+	</section>
+
+
+
+	<!-- 기본 하단 부분 -->
+	{% include "template/footer.html" %}
+	<!-- Footer Area End -->
+	<!-- Back to Top Start -->
+	<div class="bottomtotop">
+		<i class="fas fa-chevron-right"></i>
+	</div>
+	<!-- Back to Top End -->
+	<!-- Login Area Start -->
+	{% include "template/login.html" %}
+	<!-- Login Area End -->
+	{% include "template/jsloader.html" %}
+
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+{% include "template/head_css.html" %}
+
+</head>
+<body>
+	<!-- 기본 상단 부분 -->
+	{% include "template/preloader.html" %}
+    {% include "template/header.html" %}
+
+
+	<!-- Get Start Area Start -->
+	<section class="signup-confirm-area">
+		<div class="container">
+			<ul class="submenu">
+				<li class="select"><a href="/my_page">내정보</a></li>
+				<li class=""><a href="/my_inventory">인벤토리</a></li>
+				<li class=""><a href="/usage_history/type=0">은화</a></li>
+				<li class=""><a href="/usage_history/type=1">골드</a></li>
+				<li class=""><a href="/usage_history/type=2">마일리지</a></li>
+			</ul>
+
+			<div class="header-area">
+				<h4 class="title">본인인증</h4>
+				<!-- <div class='content'>
+					<p class="font_em">
+						<strong>1. Prediction은 만18세 이상만 이용 가능한 서비스 입니다(어린이/청소년은
+							가입하실 수 없습니다)</strong>
+					</p>
+					<p>
+						<strong>2. 본인 명의 휴대폰을 소지한 국내 거주 외국인도 만 나이에 따른 회원 종류 선택 후
+							가입하실 수 있습니다.</strong>
+					</p>
+					<p>
+						<strong>3. 국내에서만 이용 가능한 서비스로 해외에 거주중인경우 가입하실 수 없습니다.</strong>
+					</p>
+					<p>
+						<strong>4. 본인인증 시 제공되는 정보는 해당 인증기관에서 직접 수집하며, 인증 이외의 용도로
+							수집 또는 이용하지 않습니다.</strong>
+					</p>
+				</div>
+				 -->
+			</div>
+
+			<!-- <div class='signupConfirm_link'>
+	      <a href="" onclick="" class="signupConfirm_mobile">휴대폰 인증</a>
+			</div> -->
+
+			<div class="features">
+				<a href="/my_page_update" onclick="">
+					<div class="single-feature">
+						<div class="icon two">
+							<img src="assets/images/feature/iconmonstr-smartphone-3-72.png"
+								alt="">
+						</div>
+						<div class="content">
+							<!-- <h4 class="title">
+								Provably Fair
+							</h4> -->
+							<span class="link">휴대폰 인증하기 <i class="fas fa-arrow-right"></i></span>
+						</div>
+					</div>
+				</a>
+			</div>
+
+
+		</div>
+	</section>
+	<!-- Get Start Area End -->
+
+	{% include "template/footer.html" %}
+	<!-- Footer Area End -->
+	<!-- Back to Top Start -->
+	<div class="bottomtotop">
+		<i class="fas fa-chevron-right"></i>
+	</div>
+	<!-- Back to Top End -->
+	<!-- Login Area Start -->
+	{% include "template/login.html" %}
+	<!-- Login Area End -->
+	{% include "template/jsloader.html" %}
+</body>
+</html>

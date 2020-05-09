@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+{% include "template/head_css.html" %}
+<script>
+	var position = "{{ session['login'] }}"
+
+	if (position != "YES"){
+		alert('로그인이 필요합니다.');
+		window.location='/'
+	}
+</script>
+
+</head>
+<body>
+
+    {% include "template/preloader.html" %}
+    {% include "template/header.html" %}
+	
+	<section class="cart-area">
+		<div class="container">
+
+			{% include "community/analysis-board/mini-menu.html" %}
+
+
+
+			<div class="row">
+				<div class="col-lg-12">
+
+					<div class="cart-table-area">
+						<div class="responsive-table">
+							<table class="table">
+								<thead>
+									<tr>
+										<th scope="col">날짜</th>
+										<th scope="col">제목</th>
+										<th scope="col">닉네임</th>
+										<th scope="col">조회수</th>
+									</tr>
+								</thead>
+								
+								<tbody>
+
+
+									{% for temp_dic in data_list %}
+									<tr>
+										<td>{{ temp_dic['content_date'].strftime('%Y-%m-%d') }}</td>
+										<td style='padding:0px 0px'>
+											<!-- <a price="{{temp_dic['board_cost']}}" id="{{temp_dic['content_idx']}}" type='button'> -->
+											<a href="/board_read/board={{ temp_dic['board_idx'] }}/content={{ temp_dic['content_idx'] }}/page={{ data_dic['now_page'] }}">
+												<div style='padding:15px 12px'>
+
+
+													<!-- {% if temp_dic['board_cost']>0 %}
+														{% if temp_dic['reply_count']==None %}
+														<img src="/assets/images/금화.png" alt="">{{ temp_dic['content_subject']}}
+														{% else %}
+														<img src="/assets/images/금화.png" alt="">{{ temp_dic['content_subject']}}  <span style="color:#ff344d">[{{ temp_dic['reply_count'] }}]</span>
+														{% endif %}
+													{% else %} -->
+													{% if temp_dic['reply_count']==None %}
+													{{ temp_dic['content_subject']}}
+													{% else %}
+													{{ temp_dic['content_subject']}} <span style="color:#ff344d">[{{temp_dic['reply_count']}}]</span>
+													  {% endif %}
+													<!-- {% endif %} -->
+												</div>
+											</a>
+											<!-- </a> -->
+										</td>
+										<td>{{ temp_dic['content_writer_name'] }}</td>
+										
+										<td>{{ temp_dic['view'] }}</td>
+									</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+					<ul class="pagenation">
+						{% if data_dic['now_page']!=1 %}
+							{% if 1>data_dic['prev'] %}
+							<li class="ar">
+								<a href="/board_list/board={{data_dic['board_idx']}}/page={{data_dic['page_min']}}">
+									<i class="fas fa-arrow-left"></i>
+								</a>
+							</li>
+							{% else %}
+							<li class="ar">
+								<a href="/board_list/board={{data_dic['board_idx']}}/page={{data_dic['prev']}}">
+									<i class="fas fa-arrow-left"></i>
+								</a>
+							</li>
+							{% endif %}
+						{% endif %}
+
+						{% for page in range(data_dic['page_min'],data_dic['page_max']+1) %}
+							{% if page==data_dic['now_page'] %}
+							<li class='num on'>
+								<a href="/board_list/board={{data_dic['board_idx']}}/page={{page}}">
+									{{ page }}
+								</a>
+							</li>
+							{% else %}
+							<li class='num'>
+								<a href="/board_list/board={{data_dic['board_idx']}}/page={{page}}">
+									{{ page }}
+								</a>
+							</li>
+							{% endif %}
+						{% endfor %}
+						{% if data_dic['page_count']>data_dic['now_page'] %}
+							{% if data_dic['next']>data_dic['page_count'] %}
+							<li class="ar">
+								<a href="/board_list/board={{data_dic['board_idx']}}/page={{data_dic['page_max']}}">
+									<i class="fas fa-arrow-right"></i>
+								</a>
+							</li>
+							{% else %}
+							<li class="ar">
+								<a href="/board_list/board={{data_dic['board_idx']}}/page={{data_dic['next']}}">
+									<i class="fas fa-arrow-right"></i>
+								</a>
+							</li>
+							{% endif %}
+						{% endif %}
+					</ul>
+
+					<div class='center-btn'>
+						<a href="/board_write/board={{data_dic['board_idx']}}/page={{data_dic['now_page']}}" class="mybtn1"> 글쓰기</a>
+					</div>
+
+				</div>
+			</div>
+
+
+
+		</div>
+	</section>
+
+	<!-- 기본 하단 부분 -->
+	{% include "template/footer.html" %}
+	<!-- Footer Area End -->
+	<!-- Back to Top Start -->
+	<div class="bottomtotop">
+		<i class="fas fa-chevron-right"></i>
+	</div>
+	<!-- Back to Top End -->
+	<!-- Login Area Start -->
+	{% include "template/login.html" %}
+	<!-- Login Area End -->
+	{% include "template/jsloader.html" %}
+
+
+</body>
+</html>

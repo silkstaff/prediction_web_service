@@ -1,0 +1,87 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<jsp:include page="template/head_css.jsp" />
+
+
+</head>
+<body>
+	<!-- 기본 상단 부분 -->
+	<jsp:include page="template/preloader.jsp" />
+	<jsp:include page="template/header.jsp" />
+
+	<section class="my-info">
+		<div class="container">
+			<div class="header-area">
+				<h4 class="title">내 정보</h4>
+			</div>
+			<div class="row">
+				<div class="col-lg-12">
+
+					<div class="my-info-table-area">
+						<div class="responsive-table">
+							<table class="table">
+								<tbody>
+									<tr>
+										<th>아이디</th>
+										<td>kmlaminjoksong</td>
+									</tr>
+									<tr>
+										<th>닉네임</th>
+										<td><input type="id" class="input-field"
+											id="login-input-id" value="긍긍이"
+											style='float: left; width: 69%;'>
+											<button type="submit" class="change-btn"
+												style='float: right; width: 30%; background-color: #a1aed4;'>변경</button>
+										</td>
+									</tr>
+									<tr>
+										<th>이름</th>
+										<td>송근일</td>
+									</tr>
+									<tr>
+										<th>레벨</th>
+										<td>레벨 2</td>
+									</tr>
+									<tr>
+										<th>골드</th>
+										<td>30</td>
+									</tr>
+									<tr>
+										<th>은화</th>
+										<td>0</td>
+									</tr>
+									<tr>
+										<th>루비</th>
+										<td>30</td>
+									</tr>
+									<tr>
+										<th>추천인 골드</th>
+										<td>20</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- 기본 하단 부분 -->
+	<jsp:include page="template/footer.jsp" />
+	<div class="bottomtotop">
+		<i class="fas fa-chevron-right"></i>
+	</div>
+	<jsp:include page="template/login.jsp" />
+	<jsp:include page="template/jsloader.jsp" />
+
+</body>
+</html>

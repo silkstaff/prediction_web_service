@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+	{% include "template/head_css.html" %}
+
+	<script src="/assets/js/async.min.js"></script>
+	<link rel="stylesheet" href="{{ url_for('static', filename='other/bootstrap.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='other/style.css') }}">
+
+	<style>
+		.sport-table-wager-button.selected-item{
+			background-color: rgb(95,105,165) !important;
+			/* background-color: #a1aed4 !important; */
+			color: #fff !important;
+		}
+		.sport-table-bonus.selected-item{
+			color: #ff344d !important;
+		}
+		.sub-sport-table-tr.selected-item{
+			display:block !important;
+		}
+	</style>
+
+	<script>
+		$( document ).ready( function() {
+			$(".container").on('click','li.sport-table-wager-button',function(){
+				game_id = $(this).parents("div.sport-table").data("id")
+				if (($('li.sport-table-wager-button.selected-item').length>=10)&(!this.classList.contains('selected-item'))){
+					alert('한번 참여할 때 최대 10경기까지만 가능합니다.')
+				} else {
+					$('div.sport-table[data-id="'+game_id+'"] li.sport-table-wager-button.selected-item').not(this).removeClass('selected-item')
+					this.classList.toggle('selected-item')
+					
+					var l= $('li.sport-table-wager-button.selected-item').length
+					var base_odds=1
+					for (var r=0; r<l ; r++){
+						base_odds=base_odds*$('li.sport-table-wager-button.selected-item:eq('+r.toString()+')').data('odds')
+					}
+					$('#totalodds').html(Math.round(base_odds*100)/100)
+				}
+			})
+
+			$(".sport-table-bonus").click(function(){
+				// $('.sport-table-bonus.selected-item').not(this).removeClass('selected-item')
+				game_id = $(this).parents("div.sport-table").data('id')
+				game_sub = $('div.sport-table[data-id="'+game_id+'"] .sub-sport-table-tr')
+				// $('.sub-sport-table-tr').not(game_sub).removeClass('selected-item')
+				$(game_sub).toggleClass('selected-item')
+				this.classList.toggle('selected-item')
+			})
+
+			$("button.betting-btn").click(function(){
+				var l = $("li.sport-table-wager-button.selected-item").length
+
+				var t_odds = 1
+				var date = []
+				var game_class=[]
+				var home=[]
+				var away=[]
+				var home_odds=[]
+				var draw_odds=[]
+				var away_odds=[]
+				var game_no=[]
+				var betting=[]
+				var betting_odds=[]
+				var standard=[]
+				for (step=0; step<l; step++){
+					selected_item = $("li.sport-table-wager-button.selected-item:eq("+step.toString()+")")
+					parent1 = selected_item.parents("div.sport-table")
+					parent2 = selected_item.parents("div.sport-table-tr")
+
+					t_odds = t_odds*selected_item.data('odds')
+					date.push(parent1.data('date'))
+					home.push(parent1.data('home'))
+					away.push(parent1.data('away'))
+					game_class.push(parent2.data('class'))
+					game_no.push(parent1.data('id'))
+					betting.push(selected_item.data('betting'))
+					betting_odds.push(selected_item.data('odds'))
+
+					bet_list = selected_item.parents("div.sport-table-wager")
+
+					home_odds.push( bet_list.find("li.sport-table-wager-button:eq(0)").data("odds") )
+					if ((parent2.data('class')==0)){
+						standard.push(0)
+
+						if (parent1.data('sport')=='1'){
+							draw_odds.push( bet_list.find("li.sport-table-wager-button:eq(1)").data("odds") )
+							away_odds.push( bet_list.find("li.sport-table-wager-button:eq(2)").data("odds") )
+						} else {
+							draw_odds.push( 0 )
+							away_odds.push( bet_list.find("li.sport-table-wager-button:eq(1)").data("odds") )
+						}
+					} else{
+						standard.push(bet_list.data("stand"))
+						draw_odds.push(0)
+						away_odds.push( bet_list.find("li.sport-table-wager-button:eq(1)").data("odds") )
+					}
+				}
+
+				bet_gold=Number(document.getElementById("betting-gold").value)
+				param={bedang:t_odds,
+					bet_gold: bet_gold,
+					game_date:date,
+					game_class:game_class,
+					home_name:home,
+					away_name:away,
+					home_bedang:home_odds,
+					draw_bedang:draw_odds,
+					away_bedang:away_odds,
+					game_no:game_no,
+					betting:betting,
+					game_bedang:betting_odds,
+					standard:standard}
+				if ("{{ session['login'] }}" != 'YES'){
+					alert('로그인이 필요합니다.')
+				} else if (bet_gold<10000){
+					alert('최소 참여 골드는 10,000골드입니다.')
+				} else if (bet_gold==""){
+					alert('참여할 금액을 입력해주세요')
+				} else if (bet_gold>Number("{{ session['user_gold'] }}")){
+					alert('골드가 부족합니다.')
+				} else if (l==0){
+					alert('참여할 경기를 선택해주세요.')
+				} else if ( (bet_gold <= 2000000000) & (bet_gold*t_odds <= 10000000000) ) {
+					$.ajax({
+						traditional : true,
+						type:'post',
+						url:'/betting',
+						data: param,
+						dataType: 'text',
+						success: function(result) {
+							if (result.trim()=='2'){
+								alert('골드가 부족합니다.')
+							} else {
+								alert('참여가 성공적으로 완료되었습니다.')
+								location.replace('/game_center')
+							}
+						},
+						error: function(a,b,c){
+							alert('골드가 부족합니다.')
+						}
+					})
+				} else if (bet_gold > 2000000000){
+					alert("참여 가능 최대 금액을 초과하였습니다.")
+				} else {
+					alert("참여 당첨 최대 금액을 초과하였습니다.")
+				}
+			})
+
+			$("a.isotope-filters-list-link").click(function(){
+				$(this).toggleClass('active')
+				$("a.isotope-filters-list-link").not($(this)).removeClass('active')
+				if (this.getAttribute('data-sport')!="*"){
+					$('div.sport-table').not($('div.sport-table[data-sport="'+this.getAttribute('data-sport')+'"]')).css("display",'none')
+					$('div.sport-table[data-sport="'+this.getAttribute('data-sport')+'"]').css('display','block')
+					$('div.sport-table-header').not($('div.sport-table-header[data-sport="'+this.getAttribute('data-sport')+'"]')).css("display",'none')
+					$('div.sport-table-header[data-sport="'+this.getAttribute('data-sport')+'"]').css('display','block')
+				} else {
+					$('div.sport-table-header').css('display','block')
+					$('div.sport-table').css('display','block')
+				}
+			})
+
+			$('button.isotope-filters-toggle.button').click(function(){
+				var x = document.querySelector("ul.isotope-filters-list");
+				if (x.style.visibility === "hidden") {
+					x.style.visibility = "visible";
+					x.style.opacity = 1
+				} else {
+					x.style.visibility = "hidden";
+					x.style.opacity = 0
+				}
+			})
+		})
+	</script>
+
+
+	<script>
+	function timeConverter(UNIX_timestamp,datetime){
+			var a = new Date(UNIX_timestamp * 1000);
+			var months = ['1','2','3','4','5','6','7','8','9','10','11','12'];
+			var year = a.getFullYear();
+			var month = months[a.getMonth()];
+			var date = a.getDate();
+			var hour = a.getHours();
+			if (parseInt(hour)<10){
+				hour='0'+hour}
+			var min = a.getMinutes();
+			if (parseInt(min)<10){
+				min='0'+min}
+			var sec = a.getSeconds();
+			if (datetime){
+				var time = year+'-'+month+'-'+date+' '+hour+':'+min;
+			} else {
+				var time = month + '월 ' + date + '일 ' + hour + ':' + min ;
+			}
+			return time;
+		}
+
+	setTimeout(function(){
+		d = {{ upcoming_list|sort(attribute="time")|safe }}
+		d_real=[]
+		for (item in d){
+			if (d[item]['time']> {{ today_date }}) {
+				d_real.push(d[item])
+			}
+		}
+
+		async.each(d_real, function(gid, callback) {
+			$.ajax({
+				url: "/game_center_proxy/prematch/FI="+gid['game_no'].toString(),
+				success:function(data){
+					var base=$(".container").find(".sport-table[data-id='"+gid['game_no']+"']")
+					home_team = ($(base).data('home'))
+					away_team = ($(base).data('away'))
+
+					var today = Math.round((new Date()).getTime() / 1000);
+					if (today>gid['time']){
+						base.css('display','none')
+					}
+
+					obj=JSON.parse(data).results[0].main.sp
+					obj1=JSON.parse(data).results[0]
+					var $li = base.find(".sport-table-tr")
+
+					base.attr('data-date',timeConverter(gid['time'],datetime=true))
+					base.find("span.sport-table-date").html(timeConverter(gid['time'],datetime=false))
+
+					// <<승무패 하기>> //
+
+					// 축구
+					if (gid['sport_id']==1){
+						$li.find(".0_odds").parents("li.sport-table-wager-button").attr("data-odds",obj1.schedule.sp.main[0].odds)
+						$li.find(".1_odds").parents("li.sport-table-wager-button").attr("data-odds",obj1.schedule.sp.main[1].odds)
+						$li.find(".2_odds").parents("li.sport-table-wager-button").attr("data-odds",obj1.schedule.sp.main[2].odds)
+
+						$li.find(".0_odds").html(obj1.schedule.sp.main[0].odds)
+						$li.find(".1_odds").html(obj1.schedule.sp.main[1].odds)
+						$li.find(".2_odds").html(obj1.schedule.sp.main[2].odds)
+					// 배구
+					} else if (gid['sport_id']==91) {
+						odd_list=[]
+						for (volley in obj.game_lines){
+							if (obj.game_lines[volley]['name']=='To Win'){
+								odd_list.push(obj.game_lines[volley]['odds'])
+							}
+						}
+						$li.find(".0_odds").parents("li.sport-table-wager-button").attr("data-odds",odd_list[0])
+						$li.find(".2_odds").parents("li.sport-table-wager-button").attr("data-odds",odd_list[1])
+
+						$li.find(".0_odds").html(odd_list[0])
+						$li.find(".2_odds").html(odd_list[1])
+					// 농구
+					} else if (gid['sport_id']==18) {
+						$li.find(".0_odds").parents("li.sport-table-wager-button").attr("data-odds",obj.money_line[0].odds)
+						$li.find(".2_odds").parents("li.sport-table-wager-button").attr("data-odds",obj.money_line[1].odds)
+
+						$li.find(".0_odds").html(obj.money_line[0].odds)
+						$li.find(".2_odds").html(obj.money_line[1].odds)
+					}
+
+					var handi =base.find(".sub-sport-table-tr .handi")
+					var unover =base.find(".sub-sport-table-tr .unover")
+
+					// 축구
+					if (gid['sport_id']==1){
+						var api_handi_list = obj.alternative_asian_handicap
+						var api_unover_list = obj.goals_over_under
+					// 배구
+					} else if (gid['sport_id']==91){
+						var api_handi_list = obj.match_handicap_points
+						// alert(api_handi_list)
+						// var api_unover_list = obj.team_total_points
+					// 농구
+					} else if (gid['sport_id']==18){
+						var api_handi_list = JSON.parse(data).results[0].main_props.sp.alternative_point_spread
+						var api_unover_list = obj.game_totals
+					}
+					
+					handi_list=[]
+					handi_des_list=[]
+					handi_home_away=[]
+					handi_odds=[]
+					for (i in api_handi_list){
+						if ((Number(api_handi_list[i].handicap)%0.5==0)&(Number(api_handi_list[i].handicap)%1!=0)){
+							handi_list.push(Number(api_handi_list[i].handicap))
+							handi_home_away.push(api_handi_list[i].header)
+							handi_odds.push(api_handi_list[i].odds)
+							if ((api_handi_list[i].header=='1')|(api_handi_list[i].header==home_team)){
+								if (api_handi_list[i].handicap.includes('-')){
+									handi_des_list.push(api_handi_list[i].handicap+'(H)')
+								} else {
+									handi_des_list.push('+'+api_handi_list[i].handicap.replace('+','')+'(H)')
+								}
+							} else {
+								if (api_handi_list[i].handicap.includes('-')){
+									handi_des_list.push(api_handi_list[i].handicap.replace('-','+')+'(H)')
+								} else {
+									handi_des_list.push('-'+api_handi_list[i].handicap.replace('+','')+'(H)')
+								}
+							}
+						}
+					}
+					
+					final_key={}
+					var handi_uniquedes = Array.from(new Set(handi_des_list))
+					a=[]
+					for (i in handi_list){
+						final_key[handi_des_list[i]+handi_home_away[i]]=handi_odds[i]
+					}
+					// 축구
+					if (gid['sport_id']==1){
+						for (i in handi_uniquedes){
+							a.push({'crit':handi_uniquedes[i],'home_odds':final_key[handi_uniquedes[i]+'1'],'away_odds':final_key[handi_uniquedes[i]+'2']})
+						}
+					// 배구
+					} else if (gid['sport_id']==91){
+						for (i in handi_uniquedes){
+							a.push({'crit':handi_uniquedes[i],'home_odds':final_key[handi_uniquedes[i]+'1'],'away_odds':final_key[handi_uniquedes[i]+'2']})
+						}
+					// 농구
+					} else if (gid['sport_id']==18){
+						for (i in handi_uniquedes){
+							a.push({'crit':handi_uniquedes[i],'home_odds':final_key[handi_uniquedes[i]+home_team],'away_odds':final_key[handi_uniquedes[i]+away_team]})
+						}
+					}
+					async.each(a, function(d,callback){
+						html =  ''
+						html+=
+						'<div class="row sport-row align-items-center row-15">'+
+										'<div class="col-sm-1 col-md-1 col-lg-1 pc">'+
+											'<div class="sport-table-icon">'
+						
+						if (gid['sport_id']==1){
+							html+='<i class="sports-icon1 far fa-futbol"></i>'
+						} else if (gid['sport_id']==91){
+							html+='<i class="sports-icon1 fas fa-volleyball-ball"></i>'
+						} else if (gid['sport_id']==18){
+							html+='<i class="sports-icon1 fas fa-basketball-ball"></i>'
+						}
+				
+						html += '</div>'+
+										'</div>'+
+
+										'<div class="col-sm-9 col-md-4 col-lg-3">'+
+											'<div class="sport-table-title">'+
+												'<div class="sport-table-title-item sport-table-title-item-left" style="flex-direction: row;">'+
+													'<span class="sport-table-title-team pc">핸디캡</span>'+
+												'</div>'+
+											'</div>'+
+										'</div>'+
+										
+										'<div class="col-sm-10 col-md-6 col-lg-7">'+
+											'<div class="sport-table-wager">'+
+												'<li class="sport-table-wager-button" data-betting=0>'+
+													'<span class="pc home_team">'+
+														'맨유'+
+													'</span>'+
+													'<span class="mobile">'+
+														'승'+
+													'</span>'+
+													'<span class="sport-table-wager-button-count 0_odds">'+
+														'1.23'+
+													'</span>'+
+												'</li>'+
+
+												'<span class="sport-table-wager-button middle">'+	
+													'<span class="sport-table-wager-button-count">'+
+														'+116.5(H)'+
+													'</span>'+
+												'</span>'+
+
+												'<li class="sport-table-wager-button" data-betting=2>'+
+													'<span class="mobile">'+
+														'패'+
+													'</span>'+
+													'<span class="sport-table-wager-button-count 2_odds">'+
+														'34.25'+
+													'</span>'+
+													'<span class="pc away_team">'+
+														'첼시'+
+													'</span>'+
+												'</li>'+
+											'</div>'+
+										'</div>'+
+									'</div>'
+						$(handi).append(html)
+						var handi_element = $(handi).find('.row.sport-row.align-items-center.row-15')[$(handi).find('.row.sport-row.align-items-center.row-15').length-1]
+						
+						
+						$(handi_element).find(".0_odds").parents("li.sport-table-wager-button").attr("data-odds",d['home_odds'])
+						$(handi_element).find(".2_odds").parents("li.sport-table-wager-button").attr("data-odds",d['away_odds'])
+
+						$(handi_element).find(".0_odds").html(d['home_odds'])
+						$(handi_element).find(".2_odds").html(d['away_odds'])
+						$(handi_element).find(".pc.home_team").html(gid['home_team'])
+						$(handi_element).find(".pc.away_team").html(gid['away_team'])
+						$(handi_element).find("div.sport-table-wager").attr("data-stand",d['crit'].replace('(H)',''))
+
+						$(handi_element).find("span.sport-table-wager-button.middle .sport-table-wager-button-count").html(d['crit'])
+					})
+					// async.each(a, function(d, callback) {
+					// 	$.get("/handi", function(response) {
+					// 		$(handi).append(response);
+					// 		var handi_element = $(handi).find('.row.sport-row.align-items-center.row-15')[$(handi).find('.row.sport-row.align-items-center.row-15').length-1]
+								
+					// 		$(handi_element).find(".0_odds").html(d['home_odds'])
+					// 		$(handi_element).find(".2_odds").html(d['away_odds'])
+					// 		$(handi_element).find(".pc.home_team").html(gid['home_team'])
+					// 		$(handi_element).find(".pc.away_team").html(gid['away_team'])
+					// 		$(handi_element).find("span.sport-table-wager-button.middle .sport-table-wager-button-count").html(d['crit'])
+					// 	});
+					// })
+					unover_list=[]
+					unover_des_list=[]
+					unover_side=[]
+					unover_odds=[]
+					for (i in api_unover_list){
+						unover_list.push(api_unover_list[i].name)
+						unover_des_list.push(api_unover_list[i].name+'(U/O)')
+						unover_side.push(api_unover_list[i].header)
+						unover_odds.push(api_unover_list[i].odds)
+					}
+					final_key1={}
+					var unover_uniquedes = Array.from(new Set(unover_des_list))
+					a1=[]
+					for (i in unover_list) {
+						final_key1[unover_des_list[i]+unover_side[i]]=unover_odds[i]
+					}
+
+					for (i in unover_uniquedes){
+						a1.push({'crit':unover_uniquedes[i],'over_odds':final_key1[unover_uniquedes[i]+'Over'],'under_odds':final_key1[unover_uniquedes[i]+'Under']})
+					}
+					
+					async.each(a1,function(d,callback){
+						html=''
+						html+='<div class="row sport-row align-items-center row-15">'+
+						'<div class="col-sm-1 col-md-1 col-lg-1 pc">'+
+							'<div class="sport-table-icon">'
+						if (gid['sport_id']==1){
+							html+='<i class="sports-icon1 far fa-futbol"></i>'
+						} else if (gid['sport_id']==91){
+							html+='<i class="sports-icon1 fas fa-volleyball-ball"></i>'
+						} else if (gid['sport_id']==18){
+							html+='<i class="sports-icon1 fas fa-basketball-ball"></i>'
+						}
+						html+='</div>'+
+							'</div>'+
+						'<div class="col-sm-9 col-md-4 col-lg-3">'+
+							'<div class="sport-table-title">'+
+								'<div class="sport-table-title-item sport-table-title-item-left" style="flex-direction: row;">'+
+									'<span class="sport-table-title-team pc">언오버</span>'+
+									'</div>'+
+
+								'</div>'+
+							'</div>'+
+						'<div class="col-sm-10 col-md-6 col-lg-7">'+
+							'<div class="sport-table-wager">'+
+								'<li class="sport-table-wager-button" data-betting=0>'+
+									'<span>'+
+										'언'+
+										'</span>'+
+									'<span class="sport-table-wager-button-count 0_odds">'+
+										'1.23'+
+										'</span>'+
+									'</li>'+
+								'<span class="sport-table-wager-button middle">'+
+									'<span class="sport-table-wager-button-count">'+
+										'112.5(U/O)'+
+										'</span>'+
+									'</span>'+
+								'<li class="sport-table-wager-button" data-betting=2>'+
+									'<span class="mobile">'+
+										'오'+
+										'</span>'+
+									'<span class="sport-table-wager-button-count 2_odds">'+
+										'884.25'+
+										'</span>'+
+									'<span class="pc">'+
+										'오'+
+										'</span>'+
+									'</li>'+
+								'</div>'+
+							'</div>'+
+						'</div>'			
+					$(unover).append(html)
+					var unover_element = $(unover).find('.row.sport-row.align-items-center.row-15')[$(unover).find('.row.sport-row.align-items-center.row-15').length-1]
+					
+					$(unover_element).find(".0_odds").parents("li.sport-table-wager-button").attr("data-odds",d['under_odds'])
+					$(unover_element).find(".2_odds").parents("li.sport-table-wager-button").attr("data-odds",d['over_odds'])
+
+					$(unover_element).find("div.sport-table-wager").attr("data-stand",d['crit'].replace('(U/O)',''))
+
+					$(unover_element).find(".0_odds").html(d['under_odds'])
+					$(unover_element).find(".2_odds").html(d['over_odds'])
+					$(unover_element).find("span.sport-table-wager-button.middle .sport-table-wager-button-count").html(d['crit'])
+					})
+					// async.each(a1, function(d, callback) {
+					// 	$.get("/unover", function(response) {
+					// 		$(unover).append(response);
+					// 		var unover_element = $(unover).find('.row.sport-row.align-items-center.row-15')[$(unover).find('.row.sport-row.align-items-center.row-15').length-1]
+					// 		$(unover_element).find(".0_odds").html(d['under_odds'])
+					// 		$(unover_element).find(".2_odds").html(d['over_odds'])
+					// 		$(unover_element).find("span.sport-table-wager-button.middle .sport-table-wager-button-count").html(d['crit'])
+					// 	});
+					// })
+				},
+				async: true
+				})
+			})
+			// .done(function(){
+				var sum=0
+				sport_id_list=['1','18','91']
+				for (sport_id in sport_id_list){
+					var addon=$('div.sport-table[data-sport="'+sport_id_list[sport_id]+'"]').length
+					sum+=addon
+					$('a.isotope-filters-list-link[data-sport="'+sport_id_list[sport_id]+'"] span.isotope-filters-list-count').html(addon)
+				}
+				$('a.isotope-filters-list-link[data-sport="*"] span.isotope-filters-list-count').html(sum)
+			// })
+		}, 0)
+	</script>
+</head>
+<body>
+	<!-- 기본 상단 부분 -->
+    {% include "template/preloader.html" %}
+    {% include "template/header.html" %}
+
+	<section class="help-section writter-artical-details">
+		<div class="container">
+
+
+			
+			{% if session['login']=='YES' %}
+			<ul class="submenu">
+				<li class="select"><a href="/game_center">스포츠게임</a></li>
+				<li class=""><a href="/game_center_betting_list">참여 내역</a></li>
+				<!-- <li class=""><a href="#">게임 소개</a></li> -->
+			</ul>
+			{% else %}
+			<ul class="submenu">
+				<li class="select"><a href="/game_center">스포츠게임</a></li>
+				<!-- <li class=""><a href="#">게임 소개</a></li> -->
+			</ul>
+			{% endif %}
+
+			<div class="row isotope-wrap row-30">
+				<!-- Isotope Filters-->
+				<div class="col-lg-12">
+				  <div class="isotope-filters isotope-filters-horizontal">
+					<button class="isotope-filters-toggle button">Select<span class="caret"></span></button>
+					<ul class="isotope-filters-list" id="isotope-filters">
+
+					  <li class="isotope-filters-list-item">
+						  <a class="isotope-filters-list-link active" data-sport="*" href="#">
+							  <span class="isotope-filters-list-img">
+								  <i class="sports-icon fas fa-trophy"></i>
+								</span>
+								<span class="isotope-filters-list-text">전체</span>
+								<span class="isotope-filters-list-count"></span>
+
+							</a>
+						</li>
+
+					  <li class="isotope-filters-list-item">
+						  <a class="isotope-filters-list-link" data-sport='1' href="#">
+							  <span class="isotope-filters-list-img">
+							  	<i class="sports-icon far fa-futbol"></i>
+							  </span>
+							  <span class="isotope-filters-list-text">축구</span>
+							  <span class="isotope-filters-list-count"></span>
+							</a>
+						</li>
+
+					  <li class="isotope-filters-list-item">
+						  <a class="isotope-filters-list-link" data-sport='18' href='#'>
+							  <span class="isotope-filters-list-img">
+								 <i class="sports-icon fas fa-basketball-ball"></i>
+							  </span>
+							  <span class="isotope-filters-list-text">농구</span>
+							  <span class="isotope-filters-list-count"></span>
+							</a>
+						</li>
+
+					  <li class="isotope-filters-list-item">
+						  <a class="isotope-filters-list-link" data-sport='91' href='#'>
+							  <span class="isotope-filters-list-img">
+								<i class="sports-icon fas fa-volleyball-ball"></i>
+								</span>
+								<span class="isotope-filters-list-text">배구</span>
+								<span class="isotope-filters-list-count"></span>
+							</a>
+					  </li>
+
+					  <li class="isotope-filters-list-item">
+						<a class="isotope-filters-list-link" data-sport='151' href='#'>
+							<span class="isotope-filters-list-img">
+								<i class="sports-icon fab fa-internet-explorer"></i>
+							  </span>
+							  <span class="isotope-filters-list-text">E-Sports</span>
+							  <span class="isotope-filters-list-count">0</span>
+						  </a>
+					  </li>
+					</ul>
+
+					<div class="temporary_slip">
+						<span style="margin: 5px; padding:10px;">
+							참여 골드 설정
+							<input id="betting-gold" onkeyup="this.value=this.value.replace(/[^0-9]/g,'');">
+						</span>
+
+						<span style="margin: 5px; padding:10px;">
+							총 배당률
+							<span id="totalodds"> 1 </span>배
+						</span>
+
+						<button class="betting-btn mybtn1">
+							게임참여
+						</button>
+					</div>
+
+
+				  </div>
+				</div>
+				
+				<div class="col-lg-12 game">
+					<div class="row isotope row-30" style="margin-left:0px; margin-right:0px;" data-isotope-layout="masonry" data-column-class=".col-1" data-isotope-group="gallery">
+							<div class="col-1 isotope-item isotope-sizer"></div>
+							<!-- Football-->
+							<div class="col-lg-12 isotope-item" style="padding:0" data-filter="football">
+							
+								{% for i in upcoming_list|selectattr("time", "greaterthan", today_date)|sort(attribute='league_id')|sort(attribute="time") %}
+									{% if (loop.index==1) or ( (upcoming_list|selectattr("time", "greaterthan", today_date)|sort(attribute='league_id')|sort(attribute="time"))[loop.index-2]['league_id'] != i['league_id'] ) %}
+										<div class="sport-table-header" data-sport="{{ i['sport_id'] }}">
+												<!-- <p> -->
+													<!-- 챔피언십 -->
+													{% if i['league_id']==10041101 %}
+													<!-- {{ i['league_id'] }} -->
+													챔피언십
+													{% elif i['league_id']==10041110 %}
+													라리가
+													{% elif i['league_id']==10041315 %}
+													세리에 A
+													{% elif i['league_id']==10041095 %}
+													분데스리가
+													{% elif i['league_id']==10041809 %}
+													챔스
+													{% elif i['league_id']==10041957 %}
+													유로파
+													{% elif i['league_id']==10041282 %}
+													EPL
+													{% elif i['league_id']==10041109 %}
+													세리에 B
+													{% elif i['league_id']==10041830 %}
+													NBA
+													{% elif i['league_id']==10040498 %}
+													KBL
+													{% elif i['league_id']==10040214 %}
+													KOVO(남배)
+													{% elif i['league_id']==10041185 %}
+													WKOVO(여배)
+													{% endif %}
+												<!-- </p> -->
+										</div>
+										{% endif %}
+
+										<div class="sport-table" data-sport="{{ i['sport_id'] }}" data-id="{{ i['game_no'] }}" data-home="{{ i['home_team'] }}" data-away="{{ i['away_team'] }}">
+												<div class="sport-table-tr" data-class=0>
+													<div class="row sport-row align-items-center row-15">
+														<div class="col-sm-1 col-md-1 col-lg-1 pc">
+															<div class="sport-table-icon">
+																{% if i['sport_id']==1 %}
+																<i class="sports-icon1 far fa-futbol"></i>
+																{% elif i['sport_id']==91 %}
+																<i class="sports-icon1 fas fa-volleyball-ball"></i>
+																{% elif i['sport_id']==18 %}
+																<i class="sports-icon1 fas fa-basketball-ball"></i>
+																{% endif %}
+															</div>
+														</div>
+														<!-- 경기정보 -->
+														<div class="col-sm-9 col-md-4 col-lg-3">
+															<div class="sport-table-title">
+													
+																<div class="sport-table-title-item sport-table-title-item-left mobile">
+																	<span style="font-weight:900;" class="sport-table-title-team">{{ i['home_team'] }} vs {{ i['away_team'] }}</span>
+																</div>
+							
+																<div class="sport-table-title-item sport-table-title-item-left pc" style="flex-direction: row;">
+																	<span class="sport-table-title-team">승무패</span>
+																</div>
+							
+																<div class="sport-table-title-item sport-table-title-item-right" style="flex-direction: row;">
+																	<span class="sport-table-date">
+																		...
+																		<!-- {{ i['time'] }} -->
+																		<!-- {{ i['game_no'] }} -->
+																	</span>
+																</div>
+															</div>
+														</div>
+														<!-- 모바일에서 승무패가 뜨게 하기 -->
+														<div class="col-sm-9 col-md-4 col-lg-3 mobile">
+															<div class="sport-table-title">
+														
+																<div class="sport-table-title-item sport-table-title-item-left">
+																	<span class="sport-table-title-team">승무패</span>
+																</div>
+															</div>
+														</div>
+														<!-- 배당정보 -->
+														<div class="col-sm-10 col-md-6 col-lg-7">
+															<div class="sport-table-wager">
+																<li class="sport-table-wager-button" data-betting=0>
+																	<span class="pc home_team">
+																		{{ i['home_team'] }}
+																	</span>
+																	<span class="mobile">
+																		승
+																	</span>
+																	<span class="sport-table-wager-button-count 0_odds">
+																		...
+																	</span>
+																</li>
+																{% if i['sport_id']==1 %}
+																<li class="sport-table-wager-button middle" data-betting=1>
+																	<span class="mobile">
+																		무
+																	</span>
+																	<span class="sport-table-wager-button-count 1_odds">
+																		...
+																	</span>
+																</li>
+																{% else %}
+																<span class="sport-table-wager-button middle">
+																	<span class="sport-table-wager-button-count">
+																		VS
+																	</span>
+																</span>
+																{% endif %}
+																<li class="sport-table-wager-button" data-betting=2>
+																	<span class="mobile">
+																		패
+																	</span>
+																	<span class="sport-table-wager-button-count 2_odds">
+																		...
+																	</span>
+																	<span class="pc away_team">
+																		{{ i['away_team'] }}
+																	</span>
+																</li>
+															</div>
+														</div>
+														<!-- 더보기 -->
+														<div class="col-sm-2 col-md-1 col-lg-1">
+															<div class="sport-table-bonus">
+																<span class="sport-table-bonus-count">더보기+</span>
+															</div>
+														</div>
+													</div>
+												</div>
+
+												<div class="sub-sport-table-tr" style='display:none'>
+													<div class="sub">
+
+														<div class="sport-table-tr handi" data-class=1>
+
+															<!-- 모바일에서 핸디캡 뜨게 하기 -->
+															<div class="col-sm-9 col-md-4 col-lg-3 mobile" style='padding:0px;'>
+
+																<div class="sport-table-title">
+																   <div class="sport-table-title-item sport-table-title-item-left">
+																	  <span class="sport-table-title-team">핸디캡</span>
+																   </div>
+																</div>
+
+															</div>
+
+														</div>
+
+														<div class="sport-table-tr unover" data-class=2>
+
+															<!-- 모바일에서 언오버가 뜨게 하기 -->
+															<div class="col-sm-9 col-md-4 col-lg-3 mobile" style='padding:0px;'>
+
+																<div class="sport-table-title">
+																	<div class="sport-table-title-item sport-table-title-item-left">
+																	  <span class="sport-table-title-team">언오버</span>
+																   </div>
+																</div>
+
+															</div>
+
+
+														</div>
+
+													</div>
+												</div>
+										</div>
+								{% endfor %}
+
+							</div>
+						
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- 기본 하단 부분 -->
+	{% include "template/footer.html" %}
+	<!-- Footer Area End -->
+	<!-- Back to Top Start -->
+	<div class="bottomtotop">
+		<i class="fas fa-chevron-right"></i>
+	</div>
+	<!-- Back to Top End -->
+	<!-- Login Area Start -->
+	{% include "template/login.html" %}
+	<!-- Login Area End -->
+	{% include "template/jsloader.html" %}
+</body>
+</html>

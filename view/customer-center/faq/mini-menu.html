@@ -1,0 +1,7 @@
+<ul class="submenu">
+	<li class=""><a href="/board_list/board=2/page=1">공지사항</a></li>
+	<li class="select"><a href="/faq">FAQ</a></li>
+	{% if session['login']=='YES' %}
+	<li class=""><a href="/board_list/board=3/page=1">1대 1문의</a></li>
+	{% endif %}
+</ul>

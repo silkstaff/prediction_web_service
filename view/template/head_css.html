@@ -1,0 +1,25 @@
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="forntEnd-Developer" content="Mamunur Rashid">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" type="text/css"
+	href="https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='assets/css/bootstrap.min.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='assets/css/plugin.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='assets/css/style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='assets/css/responsive.css') }}">
+
+<script>
+	if ("{{ session['login'] }}" == 'YES'){
+		// alert("{{ session['login'] }}")
+		// alert("{{ session['user_idx'] }}")
+		$.ajax({
+			async:false,
+			type: 'post',
+			url: '/user_info_check'
+		})
+	}
+</script>

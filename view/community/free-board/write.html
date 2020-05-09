@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+{% include "template/head_css.html" %}
+
+<script>
+	$(document).ready(function(){
+		writeform=document.writeform
+		$("#board_write_btn").click(function(){
+			var title = $("#board_subject").val()
+			var content = $("#board_content").val()
+
+			var regex1 = /^[\s]+$/
+
+			if ((title=="")|(regex1.test(title))){
+				alert('제목을 입력해주세요')
+				$('#writeform').attr('onsubmit','return false');
+				$("#board_subject").focus()
+			} else if ((content=="")|(regex1.test(content))){
+				alert('내용을 입력해주세요')
+				$('#writeform').attr('onsubmit','return false');
+				$("#board_content").focus()
+			} else {
+				alert('등록되었습니다.')
+				writeform.submit()
+			}
+		})
+
+		// $(window).on('beforeunload', function() {
+    	// 	return "이 페이지를 벗어나면 데이터가 초기화 됩니다.";
+		// });
+
+	})
+	var position = "{{ session['login'] }}"
+
+	if (position != "YES"){
+		alert('로그인이 필요합니다.');
+		window.location='/'
+	}
+
+</script>
+</head>
+<body>
+	<!-- 기본 상단 부분 -->
+	{% include "template/preloader.html" %}
+    {% include "template/header.html" %}
+
+	<section class="cart-area">
+		<div class="container">
+			<form name="writeform" id="writeform" action="/board_write_pro" method="POST">
+				{% include "community/free-board/mini-menu.html" %}
+	
+				<table class="board_write">
+						<tbody>
+						<tr>
+							<th>제목</th>
+							<td>
+								<input type="hidden" name="board_idx" value="{{data_dic.board_idx}}"/>
+								<input autocomplete="off" maxlength="25" name="board_subject" id="board_subject" type="text" style=" width:98%; padding:10px; margin:10px;" class="ipw">
+							</td>
+						</tr>
+						<tr>
+							<th>내용</th>
+							<td>
+								<textarea autocomplete="off" maxlength="1000" name="board_content" id="board_content" cols="" rows="" class="" style="width:98%; height:500px; padding:10px; margin:10px;"></textarea>
+							</td>
+						</tr>
+						</tbody>
+				</table>
+
+				<div class='center-btn'>
+					<a href="/board_list/board={{ data_dic['board_idx'] }}/page={{ data_dic['page']}}" class="mybtn1"> 취소</a>
+					<button type="text" class="mybtn1" id='board_write_btn'> 글쓰기</button>
+				</div>
+			</form>
+		</div>
+	</section>
+
+
+
+	<!-- 기본 하단 부분 -->
+	{% include "template/footer.html" %}
+	<!-- Footer Area End -->
+	<!-- Back to Top Start -->
+	<div class="bottomtotop">
+		<i class="fas fa-chevron-right"></i>
+	</div>
+	<!-- Back to Top End -->
+	<!-- Login Area Start -->
+	{% include "template/login.html" %}
+	<!-- Login Area End -->
+	{% include "template/jsloader.html" %}
+
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+{% include "template/head_css.html" %}
+<script>
+	if (position != "YES"){
+		alert('로그인이 필요합니다.');
+		window.location='/'
+	}
+</script>
+
+</head>
+<body>
+	<!-- 기본 상단 부분 -->
+	{% include "template/preloader.html" %}
+    {% include "template/header.html" %}
+
+	<section class="cart-area">
+		<div class="container">
+			{% include "community/analysis-board/mini-menu.html" %}
+	
+
+			<table class="message_detail">
+				<tbody>
+					<tr>
+						<th>보낸사람</th>
+						<td>
+							<span>송근일</span>
+							<!-- <input autocomplete="off" maxlength="40" name="board_subject" id="board_subject" type="text" style=" width:98%; padding:10px; margin:10px;" class="ipw"> -->
+						</td>
+					</tr>
+					<tr>
+						<th>받은시간</th>
+						<td>
+							<span>'2019-2234243'</span>
+							<!-- <input autocomplete="off" maxlength="40" name="board_subject" id="board_subject" type="text" style=" width:98%; padding:10px; margin:10px;" class="ipw"> -->
+						</td>
+					</tr>
+					
+					<tr>
+						<th>내용</th>
+						<td>
+							<span>sddddddddddddddddddddddddddddddddddddddddddddddddd</span>
+							<!-- <textarea autocomplete="off" maxlength="1000" name="board_content" id="board_content" cols="" rows="" class="" style="width:98%; height:500px; padding:10px; margin:10px;">ㄴㅇㄹㄴㄹ</textarea> -->
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</section>
+
+	
+	
+
+	<!-- 기본 하단 부분 -->
+	{% include "template/footer.html" %}
+	<!-- Footer Area End -->
+	<!-- Back to Top Start -->
+	<div class="bottomtotop">
+		<i class="fas fa-chevron-right"></i>
+	</div>
+	<!-- Back to Top End -->
+	<!-- Login Area Start -->
+	{% include "template/login.html" %}
+	<!-- Login Area End -->
+	{% include "template/jsloader.html" %}
+
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+{% include "template/head_css.html" %}
+
+</head>
+<body>
+
+	{% include "template/preloader.html" %}
+	{% include "template/header.html" %}
+
+
+	 
+	 <!-- Awards Area Start -->
+	 <section class="awards-area">
+		<div class="container">
+			<ul class="submenu">
+				<li class=""><a href="/my_page">내정보</a></li>
+				<li class="select"><a href="/my_inventory">인벤토리</a></li>
+				<li class=""><a href="/usage_history/type=0">은화</a></li>
+				<li class=""><a href="/usage_history/type=1">골드</a></li>
+				<li class=""><a href="/usage_history/type=2">마일리지</a></li>
+			</ul>
+
+
+		   <div class="row">
+			   {% if item_list|length==0 %}
+				<div class="col-lg-12">
+					<div class="message-one">
+						<p>
+							상점에서 아이템을 구매해주세요!
+						</p>
+					</div>
+				</div>
+				{% else %}
+					{% for temp_dic in item_list %}
+							<div class="col-lg-4 col-md-6">
+							<div class="single-awards">
+								<div class="content">
+								<img src="{{ url_for('static',filename=temp_dic['image_url']) }}"  width="150" height="150" alt="">
+									<h4 class="title">
+										{{temp_dic['item_name']}}
+									</h4>
+
+									<p>
+										잔여개수 : <a style="color:#ff344d; font-weight:1000">{{temp_dic['item_num']}}</a>개
+									</p>
+									<div>
+										{{temp_dic['detail']}}
+									</div>
+
+									<!-- <form data-idx="{{temp_dic['item_idx']}}" name="using_item" id="use_form" action="/using_item_pro" method="POST"> -->
+										<!-- <input type="hidden" id='item_idx' name="item_idx" value="{{temp_dic['item_idx']}}"/> -->
+										<!-- <input type='hidden' name="store_type" value="{{store_type}}"> -->
+										{% if temp_dic['item_idx']==6 %}
+										<a href="/my_page_update" class="mybtn2" id='use_item_btn' data-cost="{{temp_dic['item_cost']}}" data-idx="{{temp_dic['item_idx']}}" style="float:right">사용하기</a>
+										{% elif temp_dic['item_idx']==7 %}
+										<a href="/my_page_update" class="mybtn2" id='use_item_btn' data-cost="{{temp_dic['item_cost']}}" data-idx="{{temp_dic['item_idx']}}" style="float:right">사용하기</a>
+										{% else %}
+										<a href="/message_write_random" class="mybtn2" id='use_item_btn' data-cost="{{temp_dic['item_cost']}}" data-idx="{{temp_dic['item_idx']}}" style="float:right">사용하기</a>
+										{% endif %}
+									<!-- </form> -->
+							</div>
+						</div>
+						</div>
+					{% endfor %}
+				{% endif %}
+			  
+		</div>
+	 </section>
+
+	{% include "template/footer.html" %}
+	<!-- Footer Area End -->
+	<!-- Back to Top Start -->
+	<div class="bottomtotop">
+		<i class="fas fa-chevron-right"></i>
+	</div>
+	<!-- Back to Top End -->
+	<!-- Login Area Start -->
+	{% include "template/login.html" %}
+	<!-- Login Area End -->
+	{% include "template/jsloader.html" %}
+
+</body>
+</html>

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+{% include "template/head_css.html" %}
+<script>
+	$(document).ready(function(){
+            $("#reply_write_btn").click(function(){
+				var position = "{{ session['login'] }}"
+
+				if (position != "YES"){
+					alert('로그인이 필요합니다.');
+					// window.location='/'
+				} else {
+					// var queryString = $("form[name=reply_write]").serialize();
+					var board_idx = $("form[name=reply_write] [name=board_idx]").val()
+					var content_idx = $("form[name=reply_write] [name=content_idx]").val()
+					var r_text = $("form[name=reply_write] [name=r_text]").val()
+					param = {board_idx:board_idx,
+							content_idx:content_idx,
+							r_text:r_text}
+					
+					var regex1 = /^[\s]+$/
+					if ((r_text=="")|(regex1.test(r_text))){
+						alert('댓글 내용을 입력해주세요.')
+						$("#exampleTextarea").val('')
+						$("#exampleTextarea").focus()
+					} else {
+						$.ajax({
+							type : 'post',
+							url : '/add_reply_pro',
+							data : param,
+							dataType : 'text',
+							error: function(xhr, status, error){
+								alert(error);
+							},
+							success : function(result){
+								alert('댓글이 작성되었습니다.')
+								location.replace('/board_read/board='+param['board_idx']+'/content='+param['content_idx'])
+							}
+						})
+					}
+				}
+			})
+
+			$("#board_delete").click(function(){
+				var board_idx = $("form[name=delete_board] [name=board_idx]").val()
+				var content_idx = $("form[name=delete_board] [name=content_idx]").val()
+				param = {board_idx:board_idx,
+					content_idx:content_idx}
+
+				$.ajax({
+					type : 'post',
+					url : '/delete_content',
+					data : param,
+					dataType : 'text',
+					error: function(xhr, status, error){
+						alert(error);
+					},
+					success : function(result){
+						if (result.trim()=='OK'){
+							alert('게시물이 삭제되었습니다.')
+							location.replace('/board_list/board='+param['board_idx'])
+						} else {
+							alert('오류입니다.')
+							location.replace('/')
+						}
+					}
+				});
+			})
+
+	})
+	function reply_delete(reply_idx){
+		// alert(reply_idx)
+		// temp_dic['reply_idx']
+		var board_idx = $("form[name=reply_write] [name=board_idx]").val()
+		var content_idx = $("form[name=reply_write] [name=content_idx]").val()
+		param = {reply_idx:reply_idx}
+
+		$.ajax({
+				type : 'post',
+				url : '/delete_reply_pro',
+				data : param,
+				dataType : 'text',
+				error: function(xhr, status, error){
+					alert(error);
+				},
+				success : function(result){
+					if (result.trim()=='OK'){
+						alert('댓글이 삭제되었습니다.')
+						location.replace('/board_read/board='+board_idx+'/content='+content_idx)
+					} else {
+						alert('/')
+						location.replace('/')
+					}
+				}
+			});
+	}
+	var position = "{{ session['login'] }}"
+	if (position != "YES"){
+		alert('로그인이 필요합니다.');
+		window.location='/'
+	}
+</script>
+
+</head>
+<body>
+	<!-- 기본 상단 부분 -->
+    {% include "template/preloader.html" %}
+    {% include "template/header.html" %}
+
+	<section class="help-section writter-artical-details">
+		<div class="container">
+
+			
+			{% include "customer-center/notice/mini-menu.html" %}
+
+
+			</ul>
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="help-box">
+						<div class="help-box-inner2 mt-0">
+							<div class="single-artical">
+								<div class="content">
+									<div class='description' style='overflow:hidden'>
+										<h4 style="word-break:break-all" class="top-title" style='float:left'>
+											{{ data_dic['content_subject']}}
+										</h4>
+										<div style='float:right'>
+											{{ data_dic['content_date'] }}
+										</div>
+									</div>
+									<div class="writer-profile">
+										<div class="writer-content">
+											<h5 class="w-name">
+												written by <a> {{ data_dic['user_name'] }} </a>
+											</h5>
+										</div>
+									</div>
+									<div style="word-break:break-all" class="inner-content">{{ data_dic['content_text'].replace('\r\n','\n') }}</div>
+								</div>
+								<div class="footer-content">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- <button id='fuck'>등록</button> -->
+
+			<div class='center-btn'>
+				{% if session['user_idx']==1 %}
+				<!-- (data_dic['content_writer_idx']==session['user_idx']) %} -->
+				<form name='delete_board' action="/delete_content" method="POST">
+					<input type="hidden" name="content_idx" value="{{data_dic['content_idx']}}"/>
+					<input type="hidden" name="board_idx" value="{{data_dic['content_board_idx']}}"/>
+					<button id='board_delete' type='button' class="mybtn1">
+						삭제하기
+
+					</button>
+					<a href="/board_modify/board={{ data_dic['content_board_idx'] }}/content={{ data_dic['content_idx'] }}/page={{ data_dic['page'] }}" class="mybtn1"> 수정하기</a>
+					<a href="/board_list/board={{ data_dic['content_board_idx'] }}/page={{ data_dic['page']}}" class="mybtn1"> 목록보기</a>
+				</form>
+				{% else %}
+				<a href="/board_list/board={{ data_dic['content_board_idx'] }}/page={{ data_dic['page']}}" class="mybtn1"> 목록보기</a>
+				{% endif %}
+			</div>
+
+
+
+
+		</div>
+	</section>
+
+	<!-- 기본 하단 부분 -->
+	{% include "template/footer.html" %}
+	<!-- Footer Area End -->
+	<!-- Back to Top Start -->
+	<div class="bottomtotop">
+		<i class="fas fa-chevron-right"></i>
+	</div>
+	<!-- Back to Top End -->
+	<!-- Login Area Start -->
+	{% include "template/login.html" %}
+	<!-- Login Area End -->
+	{% include "template/jsloader.html" %}
+
+
+</body>
+</html>

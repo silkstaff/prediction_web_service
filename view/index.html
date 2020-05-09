@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>Prediction</title>
+
+{% include "template/head_css.html" %}
+
+</head>
+<body>
+
+    {% include "template/preloader.html" %}
+    {% include "template/header.html" %}
+	
+	<!-- Hero Area Start -->
+	<div class="hero-area">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-5 d-flex align-self-center">
+					<div class="left-content">
+						<div class="content">
+							<h5 class="subtitle">No1. Sports Betting Game</h5>
+							<h1 class="title">
+								스포츠 예측<br> 게임
+							</h1>
+							<p class="text">예측하고, 적중하라!</p>
+							<div class="center-btn">
+								<a href="/game_center" class="mybtn1 link1"><i class="fas fa-gamepad"></i>
+									GAME START!
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-7">
+					<div class="hero-img2 d-block d-md-none">
+						<img src="assets/images/heroarea.png" alt="">
+					</div>
+					<div class="hero-img d-none d-md-block">
+						<img class="img-fluid full-image" src="assets/images/heroarea.png"
+							alt=""> <img class="shape phone"
+							src="assets/images/h-shapes/phone.png" alt=""> <img
+							class="shape man" src="assets/images/h-shapes/man222.png" alt="">
+						<img class="shape ripple" src="assets/images/h-shapes/ripple.png"
+							alt=""> <img class="shape ripple2"
+							src="assets/images/h-shapes/ripple1.png" alt=""> <img
+							class="shape bitcoin1" src="assets/images/h-shapes/bitcoin1.png"
+							alt=""> <img class="shape bitcoin2"
+							src="assets/images/h-shapes/bitcoin2.png" alt=""> <img
+							class="shape shape-icon" src="assets/images/h-shapes/shape.png"
+							alt=""> <img class="shape award-bg"
+							src="assets/images/h-shapes/award/bg.png" alt=""> <img
+							class="shape award" src="assets/images/h-shapes/award/award.png"
+							alt=""> <img class="shape gift-bg"
+							src="assets/images/h-shapes/giftbox/bg.png" alt=""> <img
+							class="shape gift" src="assets/images/h-shapes/giftbox/gift.png"
+							alt=""> <img class="shape shield-bg"
+							src="assets/images/h-shapes/shield/bg.png" alt=""> <img
+							class="shape shield"
+							src="assets/images/h-shapes/shield/shield.png" alt="">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Hero Area End -->
+
+	<!-- Latest Activities Area Start -->
+	<!-- <section class="activities"> -->
+		<!-- <div class="features">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="feature-box">
+							<div class="feature-box-inner">
+								<div class="row">
+									<div class="col-lg-4 col-md-6">
+										<div class="single-feature">
+											<div class="icon one">
+												<img src="assets/images/feature/icon1.png" alt="">
+											</div>
+											<div class="content">
+												<h4 class="title">
+													어디에도 없는 높은<br>배당률!
+												</h4>
+												<a href="#" class="link">자세히 보기 <i
+													class="fas fa-arrow-right"></i></a>
+											</div>
+										</div>
+									</div>
+									<div class="col-lg-4 col-md-6">
+										<div class="single-feature">
+											<div class="icon two">
+												<img src="assets/images/feature/icon2.png" alt="">
+											</div>
+											<div class="content">
+												<h4 class="title">
+													경기별로 다양한<br>베팅 종목!
+												</h4>
+												<a href="#" class="link">자세히 보기 <i
+													class="fas fa-arrow-right"></i></a>
+											</div>
+										</div>
+									</div>
+									<div class="col-lg-4 col-md-6">
+										<div class="single-feature">
+											<div class="icon three">
+												<img src="assets/images/feature/icon3.png" alt="">
+											</div>
+											<div class="content">
+												<h4 class="title">
+													24시간 대기하는<br>고객센터!
+												</h4>
+												<a href="#" class="link">자세히 보기 <i
+													class="fas fa-arrow-right"></i></a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div> -->
+
+		<!-- <img class="shape shape1" src="assets/images/people/shape1.png" alt="">
+		<img class="shape shape2" src="assets/images/people/shape2.png" alt="">
+		<img class="shape shape3" src="assets/images/people/shape3.png" alt="">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-lg-8 col-md-10">
+					<div class="section-heading">
+						<h5 class="subtitle">스포츠를 즐기는 똑똑한 방법</h5>
+						<h2 class="title">총 수익 골드 TOP</h2>
+						<p class="text">
+						</p>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="tab-menu-area">
+						<ul class="nav nav-lend mb-3" id="pills-tab" role="tablist">
+							<li class="nav-item"><a class="nav-link active"
+								id="pills-all-bets-tab" data-toggle="pill"
+								href="#pills-all-bets" role="tab" aria-controls="pills-all-bets"
+								aria-selected="true">이번주</a></li>
+							<li class="nav-item"><a class="nav-link"
+								id="pills-my-bets-tab" data-toggle="pill" href="#pills-my-bets"
+								role="tab" aria-controls="pills-my-bets" aria-selected="false">이번달</a>
+							</li>
+						</ul>
+					</div>
+					<div class="tab-content" id="pills-tabContent">
+						<div class="tab-pane fade show active" id="pills-all-bets"
+							role="tabpanel" aria-labelledby="pills-all-bets-tab">
+							<div class="responsive-table">
+								<table class="table">
+									<thead>
+										<tr>
+											<th scope="col">등수</th>
+											<th scope="col">닉네임</th>
+											<th scope="col">적중률</th>
+											<th scope="col">토탈 베팅 골드</th>
+											<th scope="col">총 수익</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>
+												1
+											</td>
+											<td>
+												<i class="fas fa-user-circle"> Tom Bass</i>
+											</td>
+											<td>70%</td>
+											<td>510000000</td>
+											<td>510000000</td>
+										</tr>
+										<tr>
+											<td>
+												2
+											</td>
+											<td>
+												<i class="fas fa-user-circle"> Tom Bass</i>
+											</td>
+											<td>70%</td>
+											<td>510000000</td>
+											<td>510000000</td>
+										</tr>
+										<tr>
+											<td>
+												3
+											</td>
+											<td>
+												<i class="fas fa-user-circle"> Tom Bass</i>
+											</td>
+											<td>70%</td>
+											<td>510000000</td>
+											<td>510000000</td>
+										</tr>
+										<tr>
+											<td>
+												4
+											</td>
+											<td>
+												<i class="fas fa-user-circle"> Tom Bass</i>
+											</td>
+											<td>70%</td>
+											<td>510000000</td>
+											<td>510000000</td>
+										</tr>
+										<tr>
+											<td>
+												5
+											</td>
+											<td>
+												<i class="fas fa-user-circle"> Tom Bass</i>
+											</td>
+											<td>70%</td>
+											<td>510000000</td>
+											<td>510000000</td>
+										</tr>
+										<tr>
+											<td>
+												6
+											</td>
+											<td>
+												<i class="fas fa-user-circle"> Tom Bass</i>
+											</td>
+											<td>70%</td>
+											<td>510000000</td>
+											<td>510000000</td>
+										</tr>
+										<tr>
+											<td>
+												7
+											</td>
+											<td>
+												<i class="fas fa-user-circle"> Tom Bass</i>
+											</td>
+											<td>70%</td>
+											<td>510000000</td>
+											<td>510000000</td>
+										</tr>
+										<tr>
+											<td>
+												8
+											</td>
+											<td>
+												<i class="fas fa-user-circle"> Tom Bass</i>
+											</td>
+											<td>70%</td>
+											<td>510000000</td>
+											<td>510000000</td>
+										</tr>
+										<tr>
+											<td>
+												9
+											</td>
+											<td>
+												<i class="fas fa-user-circle"> Tom Bass</i>
+											</td>
+											<td>70%</td>
+											<td>510000000</td>
+											<td>510000000</td>
+										</tr>
+										<tr>
+											<td>
+												10
+											</td>
+											<td>
+												<i class="fas fa-user-circle"> Tom Bass</i>
+											</td>
+											<td>70%</td>
+											<td>510000000</td>
+											<td>510000000</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div class="tab-pane fade" id="pills-my-bets" role="tabpanel"
+							aria-labelledby="pills-my-bets-tab">
+							<div class="responsive-table">
+								<table class="table">
+									<thead>
+										<tr>
+											<th scope="col">등수</th>
+											<th scope="col">닉네임</th>
+											<th scope="col">적중률</th>
+											<th scope="col">토탈 베팅 골드</th>
+											<th scope="col">총 수익</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>
+												1
+											</td>
+											<td>
+												<i class="fas fa-user-circle"> Tom Bass</i>
+											</td>
+											<td>70%</td>
+											<td>510000000</td>
+											<td>510000000</td>
+										</tr>
+										<tr>
+											<td>
+												2
+											</td>
+											<td>
+												<i class="fas fa-user-circle"> Tom Bass</i>
+											</td>
+											<td>70%</td>
+											<td>510000000</td>
+											<td>510000000</td>
+										</tr>
+										<tr>
+											<td>
+												3
+											</td>
+											<td>
+												<i class="fas fa-user-circle"> Tom Bass</i>
+											</td>
+											<td>70%</td>
+											<td>510000000</td>
+											<td>510000000</td>
+										</tr>
+										<tr>
+											<td>
+												4
+											</td>
+											<td>
+												<i class="fas fa-user-circle"> Tom Bass</i>
+											</td>
+											<td>70%</td>
+											<td>510000000</td>
+											<td>510000000</td>
+										</tr>
+										<tr>
+											<td>
+												5
+											</td>
+											<td>
+												<i class="fas fa-user-circle"> Tom Bass</i>
+											</td>
+											<td>70%</td>
+											<td>510000000</td>
+											<td>510000000</td>
+										</tr>
+										<tr>
+											<td>
+												6
+											</td>
+											<td>
+												<i class="fas fa-user-circle"> Tom Bass</i>
+											</td>
+											<td>70%</td>
+											<td>510000000</td>
+											<td>510000000</td>
+										</tr>
+										<tr>
+											<td>
+												7
+											</td>
+											<td>
+												<i class="fas fa-user-circle"> Tom Bass</i>
+											</td>
+											<td>70%</td>
+											<td>510000000</td>
+											<td>510000000</td>
+										</tr>
+										<tr>
+											<td>
+												8
+											</td>
+											<td>
+												<i class="fas fa-user-circle"> Tom Bass</i>
+											</td>
+											<td>70%</td>
+											<td>510000000</td>
+											<td>510000000</td>
+										</tr>
+										<tr>
+											<td>
+												9
+											</td>
+											<td>
+												<i class="fas fa-user-circle"> Tom Bass</i>
+											</td>
+											<td>70%</td>
+											<td>510000000</td>
+											<td>510000000</td>
+										</tr>
+										<tr>
+											<td>
+												10
+											</td>
+											<td>
+												<i class="fas fa-user-circle"> Tom Bass</i>
+											</td>
+											<td>70%</td>
+											<td>510000000</td>
+											<td>510000000</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+	</section> -->
+
+	
+	<!-- Latest Activities Area End -->
+
+	<!-- Footer Area Start -->
+	{% include "template/footer.html" %}
+	<!-- Footer Area End -->
+	<!-- Back to Top Start -->
+	<div class="bottomtotop">
+		<i class="fas fa-chevron-right"></i>
+	</div>
+	<!-- Back to Top End -->
+	<!-- Login Area Start -->
+	{% include "template/login.html" %}
+	<!-- Login Area End -->
+	{% include "template/jsloader.html" %}
+
+</body>
+</html>

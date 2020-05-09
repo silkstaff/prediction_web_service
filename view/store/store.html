@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+{% include "template/head_css.html" %}
+<script>
+	function purchase_item(){
+		var position = "{{ session['login'] }}"
+		if (position != "YES"){
+			alert('아이템을 구매하시려면 로그인이 필요합니다.')
+		} else {
+			var store_type = "{{store_type}}"
+			var user_have
+			var goods
+			var item_cost = event.target.getAttribute('data-cost')
+			var item_idx = event.target.getAttribute('data-idx')
+			
+			if (store_type=="0"){
+				user_have = "{{session['user_silver']}}"
+				goods = "은화"
+			} else {
+				user_have = "{{session['user_mil']}}"
+				goods = "마일리지"
+			}
+
+			if (Number(item_cost)>Number(user_have)){
+				alert(goods+'가 부족합니다.')
+			} else {
+				var decision = confirm('해당 아이템을 정말로 구매하시겠습니까? (아이템의 가격 : '+item_cost+goods+')')
+				if (decision==true){
+					$("form[data-idx="+item_idx+"]").submit()
+				}
+			}
+		}
+	}
+</script>
+</head>
+<body>
+
+    {% include "template/preloader.html" %}
+    {% include "template/header.html" %}
+
+
+	 
+	 <!-- Awards Area Start -->
+	 <section class="awards-area">
+		<div class="container">
+		{% if store_type=="0" %}
+		  <ul class="submenu">
+			<li class="select"><a href="/store/type=0">은화 상점</a></li>
+			<li class=""><a href="/store/type=1">마일리지 상점</a></li>
+			<li class=""><a href="#">은화 충전</a></li>
+		  </ul>
+		{% else %}
+		  <ul class="submenu">
+			<li class=""><a href="/store/type=0">은화 상점</a></li>
+			<li class="select"><a href="/store/type=1">마일리지 상점</a></li>
+			<li class=""><a href="#">은화 충전</a></li>
+		  </ul>
+		{% endif %}
+
+		
+		   <div class="row">
+			  {% for temp_dic in item_list %}
+				<div class="col-lg-4 col-md-6">
+				 <div class="single-awards">
+					<div class="bonus_gold">
+						<!-- <img src="{{ url_for('static',filename='assets/images/금화.png') }}" alt="" width="20" height="20"> -->
+						보너스 골드 {{'{:,}'.format(temp_dic['bonus_gold'])}}
+					 </div>
+					<div class="content">
+					   <img src="{{ url_for('static',filename=temp_dic['image_url']) }}"  width="150" height="150" alt="">
+					   <h4 class="title">
+							{{temp_dic['item_name']}}
+					   </h4>
+					   {% if store_type=='0' %}
+					   	<p>
+						<img src="{{ url_for('static',filename='assets/images/은화.png') }}" alt="" width="20" height="20">{{'{:,}'.format(temp_dic['item_cost'])}} 은화
+						</p>
+						{% else %}
+						<p>
+							<img src="{{ url_for('static',filename='assets/images/icon3.png') }}" alt="" width="20" height="20">{{'{:,}'.format(temp_dic['item_cost'])}} 마일리지
+						</p>
+						{% endif %}
+
+						<div>
+							{{temp_dic['detail']}}
+						</div>
+						<form data-idx="{{temp_dic['item_idx']}}" name="purchasing_item" id="purchase_form" action="/purchasing_item_pro" method="POST">
+					    <input type="hidden" id='item_idx' name="item_idx" value="{{temp_dic['item_idx']}}"/>
+					    <input type='hidden' name="store_type" value="{{store_type}}">
+						<button type="button" class="mybtn2" id='purchase_item_btn' data-cost="{{temp_dic['item_cost']}}" data-idx="{{temp_dic['item_idx']}}" onclick="purchase_item()">구매하기</button>
+						</form>
+					</div>
+				 </div>
+			  </div>
+			  <!-- </form> -->
+			  {% endfor %}
+
+		   </div>
+		</div>
+	 </section>
+
+	{% include "template/footer.html" %}
+	<!-- Footer Area End -->
+	<!-- Back to Top Start -->
+	<div class="bottomtotop">
+		<i class="fas fa-chevron-right"></i>
+	</div>
+	<!-- Back to Top End -->
+	<!-- Login Area Start -->
+	{% include "template/login.html" %}
+	<!-- Login Area End -->
+	{% include "template/jsloader.html" %}
+
+</body>
+</html>

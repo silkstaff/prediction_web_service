@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+{% include "template/head_css.html" %}
+
+</head>
+<body>
+    {% include "template/preloader.html" %}
+    {% include "template/header.html" %}
+	
+
+	<section class="my-info">
+		<div class="container">
+			<ul class="submenu">
+				<li class="select"><a href="#">내정보</a></li>
+				<li class=""><a href="/my_inventory">인벤토리</a></li>
+				<li class=""><a href="/usage_history/type=0">은화</a></li>
+				<li class=""><a href="/usage_history/type=1">골드</a></li>
+				<li class=""><a href="/usage_history/type=2">마일리지</a></li>
+			</ul>
+			<div class="header-area">
+				<h4 class="title">내 정보</h4>
+			</div>
+
+			<div class="row">
+				<div class="col-lg-12">
+
+					<div class="my-info-table-area">
+						<div class="responsive-table">
+							<table class="table">
+								<tbody>
+									<tr>
+										<th>아이디</th>
+										<td>{{ user_info['user_id'] }}</td>
+									</tr>
+									<tr>
+										<th>닉네임</th>
+										<td>
+											{{ user_info['user_nickname'] }}
+											<!-- <input type="id" class="input-field"
+											id="login-input-id" value="{{ user_info['user_nickname'] }}"
+											style='float: left; width: 69%;'>
+											<button type="submit" class="mybtn3" style="height:100%; margin-bottom:0" onclick="real_time_nickname()">변경</button> -->
+										</td>
+									</tr>
+									<!-- <tr>
+										<th>이름</th>
+										<td>{{ user_info['user_name'] }}</td>
+									</tr> -->
+									<!-- <tr>
+										<th>레벨</th>
+										<td>{{ user_info['user_lev'] }}</td>
+									</tr> -->
+									<tr>
+										<th>골드</th>
+										<td>{{ user_info['user_gold'] }}</td>
+									</tr>
+									<tr>
+										<th>은화</th>
+										<td>{{ user_info['user_silver'] }}</td>
+									</tr>
+									<tr>
+										<th>마일리지</th>
+										<td>{{ user_info['user_mil'] }}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+
+				</div>
+			</div>
+			<div class='center-btn'>
+				<a href="/change_info_telephone" class="mybtn1"> 정보수정</a>
+				<a href="/my_page_delete" class="mybtn1"> 회원탈퇴</a>
+			</div>
+		</div>
+	</section>
+
+
+
+	<!-- 기본 하단 부분 -->
+	{% include "template/footer.html" %}
+	<!-- Footer Area End -->
+	<!-- Back to Top Start -->
+	<div class="bottomtotop">
+		<i class="fas fa-chevron-right"></i>
+	</div>
+	<!-- Back to Top End -->
+	<!-- Login Area Start -->
+	{% include "template/login.html" %}
+	<!-- Login Area End -->
+	{% include "template/jsloader.html" %}
+
+
+</body>
+</html>

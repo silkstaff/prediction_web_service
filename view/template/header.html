@@ -1,0 +1,101 @@
+
+<header class="header">
+		<!-- Top Header Area Start -->
+		<section class="top-header">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="content">
+							<div class="left-content">
+								<ul class="left-list">
+									<li>
+										<p>
+											<!--<i class="fas fa-sms"></i>	카톡문의-->
+										</p>
+									</li>
+								</ul>
+							</div>
+							<div class="right-content">
+								<ul class="right-list">
+
+
+									{% if session['login'] == 'YES' %}
+									<li>
+										<a class="profile" >
+											{% if session['user_icon']==0 %}
+											<i class="fas fa-baseball-ball"></i>
+											{% elif session['user_icon']==1 %}
+											<i class="fas fa-futbol"></i>
+											{% elif session['user_icon']==2 %}
+											<i class="fas fa-basketball-ball"></i>
+											{% elif session['user_icon']==3 %}
+											<i class="fas fa-user-circle"></i>
+											{% endif %}
+											
+											{{session['user_nickname']}}
+										</a>
+									</li>
+									<li>
+										<a href='/usage_history/type=2' class="silver-num" style='color:rgb(128, 128, 128);'>
+											<img src="{{ url_for('static',filename='assets/images/icon3.png') }}" alt="" width="20" height="20">
+											<!-- <img src="{{ url_for('static',filename='assets/images/은화.png') }}" alt="" width="20" height="20"> -->
+											{{'{:,}'.format(session['user_mil'])}}
+										</a>
+									</li>
+									<li>
+										<a href='/usage_history/type=0' class="silver-num" style='color:rgb(128, 128, 128);'>
+											<img src="{{ url_for('static',filename='assets/images/은화.png') }}" alt="" width="20" height="20">
+											{{'{:,}'.format(session['user_silver'])}}
+										</a>
+									</li>
+									<li>
+										<a href='/usage_history/type=1' class="gold-num" style='color:rgba(255, 238, 2, 0.863);'>
+											<img src="{{ url_for('static',filename='assets/images/금화.png') }}" alt="" width="20" height="20">
+											{{'{:,}'.format(session['user_gold'])}}
+											<!-- {{session['user_gold']}} -->
+										</a>
+									</li>
+									<li>
+										<a href="/message_list/type=0" class="message" style='color:#a1aed4;'>
+											<i class="fas fa-sms"></i> 쪽지
+											{% if session['user_message']==0 %}
+											<span>[{{session['user_message']}}]</span>
+											{% else %}
+											<span style='color:red;'>[{{session['user_message']}}]</span>
+											{% endif %}
+										</a>
+									</li>
+
+									{% else %}
+
+									<li>
+										<a href="/find_id" class="sign-up" style='color:#a1aed4;'>
+											<i class="far fa-hand-point-up"></i> ID/PW 찾기
+										</a>
+									</li>
+									<li>
+										<a href="/signup_tele" class="sign-up" style='color:#a1aed4;'>
+											<i class="fas fa-user"></i> 회원가입
+										</a>
+									</li>
+								  	{% endif %}
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- Top Header Area End -->
+		<!--Main-Menu Area Start-->
+		<div class="mainmenu-area">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-12">
+						{% include "template/nav.html" %}
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--Main-Menu Area Start-->
+	</header>

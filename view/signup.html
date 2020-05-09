@@ -1,0 +1,112 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<jsp:include page="template/head_css.jsp"/>
+
+
+</head>
+<body>
+	<!-- 기본 상단 부분 -->
+	<jsp:include page="template/preloader.jsp" />
+	<jsp:include page="template/header.jsp" />
+
+	<section class="signup-area">
+	 <div class="container">
+      <div class="header-area">
+        <h4 class="title">2단계. 회원가입</h4>
+      </div>
+      <div class="form-area">
+        <form action="#" method="POST">
+
+          <div style="overflow:hidden;" class="form-group">
+              <label for="input-id">아이디</label>
+              <div style='overflow:hidden;' class='hor'>
+              	<input style='float:left; width:60%;' type="id" class="input-field" id="input-id"  placeholder="6~12글자 영문 혹은 숫자">
+			    <button type="submit" class="mybtn2">중복확인</button>
+              </div>
+          </div>
+
+          <div class="form-group">
+              <label for="input-pw">비밀번호</label>
+              <input type="password" class="input-field" id="input-pw"  placeholder="8~12글자 영문+숫자+특수문자">
+          </div>
+
+          <div class="form-group">
+              <label for="input-pwcheck">비밀번호 확인</label>
+              <input type="password" class="input-field" id="input-pwcheck"  placeholder="상단 비밀번호를 확인해주세요.">
+          </div>
+
+          <div class="form-group">
+              <label for="input-recom">추천인 아이디</label>
+              <input type="recom" class="input-field" id="input-recom"  placeholder="추천인 등록시 보너스 50만골드 지급 (없을시 빈칸)">
+          </div>
+
+		  <div class="form-group">
+              <label for="input-nickname">닉네임</label>
+
+              <div style='overflow:hidden;' class='hor'>
+              	<input style='float:left; width:60%;' class="input-field" id="input-nickname"  placeholder="영문 혹은 한글 3글자 이상">
+			    <button type="submit" class="mybtn2">중복확인</button>
+              </div>
+              
+          </div>
+
+					<div class="form-group">
+					    <label for="input-email">이메일</label>
+					    <input type="email" class="input-field" id="input-email"  placeholder="본인의 이메일을 정확히 입력해주세요.">
+					</div>
+
+
+					<div class="form-group">
+            <div class="check-group">
+                <input type="checkbox" class="check-box-field" id="input-terms">
+                <label for="input-terms">
+                    <a href='#'>이용약관</a>에 동의합니다.[필수]
+                </label>
+            </div>
+            <div class="check-group">
+                <input type="checkbox" class="check-box-field" id="input-terms1">
+                <label for="input-terms1">
+                    <a href='#'>개인정보 수집/이용</a>에 동의합니다 [필수]
+                </label>
+            </div>
+            <div class="check-group">
+                <input type="checkbox" class="check-box-field" id="input-terms2">
+                <label for="input-terms2">
+                    <a href='#'>운영정책</a>에 동의합니다.[필수]
+                </label>
+            </div>
+            <div class="check-group">
+                <input type="checkbox" class="check-box-field" id="input-terms4">
+                <label for="input-terms3">
+                    <a href='#'>마케팅 수신</a>에 동의합니다.[선택]
+                </label>
+            </div>
+          </div>
+
+          <div class="center-btn">
+            <button type="submit" class="mybtn1">회원가입하기</button>
+          </div>
+        </form>
+      </div>
+
+		</div>
+	</section>
+
+
+
+	<!-- 기본 하단 부분 -->
+	<jsp:include page="template/footer.jsp" />
+	<div class="bottomtotop">
+		<i class="fas fa-chevron-right"></i>
+	</div>
+	<jsp:include page="template/login.jsp" />
+	<jsp:include page="template/jsloader.jsp" />
+
+</body>
+</html>

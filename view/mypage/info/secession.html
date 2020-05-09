@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+{% include "template/head_css.html" %}
+
+<script>
+	$(document).ready(function(){
+        $('.mybtn1.secession').bind('click',function(){
+            $(".mybtn1.secession").unbind('click')
+            $.ajax({
+                type:'post',
+                url:'/user_secession_pro',
+                success: function(result) {
+                    alert('탈퇴되었습니다. 사행성 방지를 위해 재가입은 30일 이후에 가능합니다.')
+                    window.location.href= '/'
+                }
+            })
+        })
+	})
+</script>
+
+</head>
+<body>
+    {% include "template/preloader.html" %}
+    {% include "template/header.html" %}
+
+    <section class="cart-area">
+
+	    <div class="container">
+            <ul class="submenu">
+				<li class="select"><a href="/my_page">내정보</a></li>
+				<li class=""><a href="/my_inventory">인벤토리</a></li>
+				<li class=""><a href="/usage_history/type=0">은화</a></li>
+				<li class=""><a href="/usage_history/type=1">골드</a></li>
+				<li class=""><a href="/usage_history/type=2">마일리지</a></li>
+            </ul>
+
+            <!-- <div class="header-area">
+				<h4 class="title">내 정보</h4>
+			</div> -->
+
+
+            <div class="row">
+				<div class="col-lg-12">
+					<div class="message-one">
+						<p>
+							<h3>회원탈퇴 주의사항</h3><br><br>
+                            - 회원탈퇴 시 해당 계정의 모든 계정정보와 게임이용현황(게임이용현황, 보유한 유/무료 아이템, 잔여 은화, 골드, 마일리지 등) 이 삭제되며 삭제된 정보는 절대 복구할 수 없습니다.<br>
+                            - 사행성방지를 위해 회원 탈퇴 후 바로 재 회원가입이 불가하며, 탈퇴일로부터 30일 후 재가입이 가능합니다.<br>
+                            - 탈퇴한 계정은 다시 사용하실 수 없습니다.<br>
+                            - 회원탈퇴 취소는 탈퇴신청 7일 이내 로그인 시, 본인인증을 통해 철회가 가능합니다.<br>
+                            - 탈퇴를 하더라도 작성한 게시물은 삭제되지 않습니다.<br>
+                            - 프리딕션에 작성한 모든 게시물과 댓글은 탈퇴를 하더라도 유지됩니다.<br>
+						</p>
+                    </div>
+                </div>
+            </div>
+            <div class='center-btn'>
+                <button class="mybtn1 secession"> 회원탈퇴</button>
+                <a href="/my_page" class="mybtn1"> 취소</a>
+            </div>
+		</div>
+
+    </section>
+
+
+
+	<!-- 기본 하단 부분 -->
+	{% include "template/footer.html" %}
+	<!-- Footer Area End -->
+	<!-- Back to Top Start -->
+	<div class="bottomtotop">
+		<i class="fas fa-chevron-right"></i>
+	</div>
+	<!-- Back to Top End -->
+	<!-- Login Area Start -->
+	{% include "template/login.html" %}
+	<!-- Login Area End -->
+	{% include "template/jsloader.html" %}
+
+    <!-- <script src="assets/js/login_not.js"></script> -->
+</body>
+</html>

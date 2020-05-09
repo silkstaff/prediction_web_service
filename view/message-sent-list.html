@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>Prediction</title>
+
+{% include "template/head_css.html" %}
+
+</head>
+<body>
+
+    {% include "template/preloader.html" %}
+    {% include "template/header.html" %}
+	
+	<section class="cart-area">
+		<div class="container">
+			<ul class="submenu">
+				<li class=""><a href="message-receive-list.jsp">받은 쪽지</a></li>
+				<li class="select"><a href="message-sent-list.jsp">보낸 쪽지</a></li>
+			</ul>
+
+			<button type="delete" class="mybtn1 delete">쪽지삭제</button>
+			<strong>보낸 쪽지는 180일이 경과 후 자동 삭제됩니다.</strong>
+
+
+			<div class="row">
+				<div class="col-lg-12">
+
+					<div class="cart-table-area">
+						<div class="responsive-table">
+							<table class="table">
+								<thead>
+									<tr>
+										<th class='tb-checkbox' scope="col">
+											<input type="checkbox" class="check-box-field" id="input-terms">
+										</th>
+										<th scope="col">제목</th>
+										<th scope="col">받은사람</th>
+										<th scope="col">상태</th>
+										<th scope="col">보낸시간</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td class='tb-checkbox'>
+											<input type="checkbox" class="check-box-field" id="input-terms">
+										</td>
+										<td><a href='message-sent-inside.jsp'>머니상을 근절합시다.</a></td>
+										<td>긍긍이</td>
+										<td>
+											<i class="far fa-envelope">읽음</i>
+										</td>
+										<td>2019-01-01 10:21</td>
+									</tr>
+									<tr>
+										<td class='tb-checkbox'>
+											<input type="checkbox" class="check-box-field" id="input-terms">
+										</td>
+										<td><a href='message-sent-inside.jsp'>머니상을 근절합시다.</a></td>
+										<td>긍긍이</td>
+										<td>
+											<i class="far fa-envelope-open">안읽음</i>
+										</td>
+										<td>2019-01-01 10:21</td>
+									</tr>
+									<tr>
+										<td class='tb-checkbox'>
+											<input type="checkbox" class="check-box-field" id="input-terms">
+										</td>
+										<td><a href='message-sent-inside.jsp'>머니상을 근절합시다.</a></td>
+										<td>긍긍이</td>
+										<td>
+											<i class="far fa-envelope-open">안읽음</i>
+										</td>
+										<td>2019-01-01 10:21</td>									
+									</tr>
+									<tr>
+										<td class='tb-checkbox'>
+											<input type="checkbox" class="check-box-field" id="input-terms">
+										</td>
+										<td><a href='message-sent-inside.jsp'>머니상을 근절합시다.</a></td>
+										<td>긍긍이</td>
+										<td>
+											<i class="far fa-envelope">읽음</i>
+										</td>
+										<td>2019-01-01 10:21</td>
+									</tr>
+									
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+					<ul class="pagenation">
+						<li class="ar"><a href="#"> <i class="fas fa-arrow-left"></i>
+						</a></li>
+						<li class="num on"><a href="#">1</a></li> <!-- 이렇게 현재 있는 페이지에만 class="num on"으로 설정 -->
+						<li class="num "><a href="#">2</a></li>
+						<li class="num "><a href="#">3</a></li>
+						<li class="num "><a href="#">4</a></li>
+						<li class="num "><a href="#">5</a></li>
+						<li class="num "><a href="#">6</a></li>
+						<li class="num "><a href="#">7</a></li>
+						<li class="num "><a href="#">8</a></li>
+						<li class="num "><a href="#">9</a></li>
+						<li class="num "><a href="#">10</a></li>
+						<li class="ar"><a href="#"> <i class="fas fa-arrow-right"></i>
+						</a></li>
+					</ul>
+
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- 기본 하단 부분 -->
+	{% include "template/footer.html" %}
+	<!-- Footer Area End -->
+	<!-- Back to Top Start -->
+	<div class="bottomtotop">
+		<i class="fas fa-chevron-right"></i>
+	</div>
+	<!-- Back to Top End -->
+	<!-- Login Area Start -->
+	{% include "template/login.html" %}
+	<!-- Login Area End -->
+	{% include "template/jsloader.html" %}
+
+</body>
+</html>

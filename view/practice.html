@@ -1,0 +1,71 @@
+<html>
+    <head>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script>
+
+            var home_team=[];
+            var away_team=[];
+            var game_id=[];
+            var league_name=[];
+            var sport_name=[];
+            var time=[];
+            var page_num=1;
+            $('#show').html('....loading...');
+            alert('시작')
+            league_array=['10041110','10041101','10041315','10041095','10041809','10041957','10041282','10041109']
+
+            for(var lid in league_array){
+                $.ajax({
+                    // type: "GET",
+                    url: "/game_center_proxy/upcoming/sport_id=1&league_id="+league_array[lid].toString(),
+                    success:function(data){
+                        obj=JSON.parse(data)
+                        page_num=Math.ceil(obj.pager.total/50)
+                        for(var j=0; j<obj.results.length; j++){
+                            home_team.push(obj.results[j]['home']['name'])
+                            away_team.push(obj.results[j]['away']['name'])
+                            game_id.push(obj.results[j]['id'])
+                            league_name.push(obj.results[j]['league']['name'])
+                            sport_name.push(obj.results[j]['sport_id'])
+                            time.push(obj.results[j]['time'])
+                        }
+                    },
+                    async: false
+                })
+                for(var j=2; j<page_num+1; j++){
+                    $.ajax({
+                    url: "/game_center_proxy/upcoming/sport_id=1&page="+j.toString()+"&league_id="+league_array[lid].toString(),
+                    success:function(data){
+                        obj=JSON.parse(data)
+                        for(var j=0; j<obj.results.length; j++){
+                            home_team.push(obj.results[j]['home']['name'])
+                            away_team.push(obj.results[j]['away']['name'])
+                            game_id.push(obj.results[j]['id'])
+                            league_name.push(obj.results[j]['league']['name'])
+                            sport_name.push(obj.results[j]['sport_id'])
+                            time.push(obj.results[j]['time'])
+                        }
+                    },
+                    async: false
+                    })
+                }
+            }
+            alert('마지막이고 그것은 ' +home_team.length.toString())
+
+            
+
+
+            stopAlert=function(){
+                $("#show").html('시발아 멈춰');
+                clearInterval(refreshIntervalId);
+            }
+        </script>
+
+    </head>
+    <body>
+        <a>1</a>
+        <button id="call" onclick="startAlert()">클릭!</button>
+        <button id="call2" onclick="stopAlert()">스톱!</button>
+        <p id="show"></p>
+    </body>
+</html>

@@ -1,0 +1,63 @@
+<html>
+    <head>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script>
+            function api_call(type,param){
+                $.ajax({
+                        // type: "GET",
+                        url: "/game_center_proxy/"+type+"/"+param,
+                        success:function(data){
+                            obj=JSON.parse(data)
+                            html="<ul>"
+                            for(var j=0; j<10; j++){
+                                html+="<li>"+obj.results[j]['home']['name']+"</li>";
+                            }
+                            html+="</ul>"
+                            $('#show').html(html)
+                        }
+                    })
+                }
+            rrrr=1
+            startAlert=function(){
+                refreshIntervalId = setInterval(function () {
+                    var home_team=[];
+                    var away_team=[];
+                    var game_id=[];
+                    var league_id=[];
+                    var sport_id=[];
+                    $('#show').html('....loading...');
+                    $.ajax({
+                        // type: "GET",
+                        url: "/game_center_proxy/upcoming/sport_id=1&league_id=10041110",
+                        success:function(data){
+                            obj=JSON.parse(data)
+                            html="<ul>"
+                            for(var j=0; j<10; j++){
+                                html+="<li>"+obj.results[j]['home']['name']+"</li>";
+                            }
+                            html+="</ul>"
+                            // alert(obj.results[0]['id'])
+                            // alert(obj.re);
+                            $('#show').html(html)
+                            // $('#show').html()
+                            // $('#show').html(typeof data)
+                            // .html(data['results']);
+                        }
+                    })
+                },3000);
+            }
+
+            stopAlert=function(){
+                $("#show").html('시발아 멈춰');
+                clearInterval(refreshIntervalId);
+            }
+        </script>
+
+    </head>
+    <body>
+        <a>1</a>
+        <button id="call" onclick="startAlert()">클릭!</button>
+        <button id="call2" onclick="stopAlert()">스톱!</button>
+        <p id="show"></p>
+    </body>
+</html>

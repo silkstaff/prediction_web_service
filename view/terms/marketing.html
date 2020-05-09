@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+{% include "template/head_css.html" %}
+</head>
+
+<body>
+	<!-- 기본 상단 부분 -->
+    {% include "template/preloader.html" %}
+    {% include "template/header.html" %}
+
+	<section class="help-section writter-artical-details">
+		<div class="container">
+
+			<ul class="submenu">
+				<li class=""><a href="/terms/terms_conditions">이용약관</a></li>
+				<li class=""><a href="/terms/use_person_info">개인정보 수집/이용</a></li>
+				<li class=""><a href="/terms/operation_policy">운영정책</a></li>
+				<li class="select"><a href="/terms/marketing">마케팅 수신</a></li>
+			</ul>
+
+			</ul>
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="help-box">
+						<div class="help-box-inner2 mt-0">
+							<div class="single-artical">
+								<div class="content">
+									<div class='description' style='overflow:hidden'>
+										<h4 style="word-break:break-all" class="top-title" style='float:left'>
+											마케팅 정보 수신 동의(선택)
+										</h4>
+										<div style='float:right'>
+											2020-02-14
+										</div>
+									</div>
+									<div class="writer-profile">
+										<div class="writer-content">
+											<h5 class="w-name">
+												written by <a> 운영자 </a>
+											</h5>
+										</div>
+									</div>
+									<div class="inner-content">
+
+㈜프리딕션은 개인정보보호법 및 정보통신망이용촉진및정보보호등에관한법률 등 관계법령에 따라 광고성정보를 전송하기 위해 수산지의 사전 수신동의를 받고 있으며, 광고성정보 수신자의 수신동의여부를 정기적으로 확인합니다.
+
+1. 전송방법
+고객님의 모바일 문자메시지(SMS), E-mail 등을 통해 전달될 수 있습니다.
+										
+2. 전송내용
+발송되는 마케팅 정보는 수신자에게 프리딕션과 관련하여 제공하는 혜택 정보, 이벤트 정보 등 광고성 정보로 관련법의 규정을 준수하여 발송됩니다. 단, 광고성 정보 이외 의무적으로 안내되어야 하는 정보성 내용은 수신동의 여부와 무관하게 제공됩니다.
+										
+3. 고객님은 수신 동의 이후에라도 의사에 따라 동의를 철회할 수 있으며, 수신을 동의하지 않아도 회사가 제공하는 기본적인 서비스를 이용할 수 있으나, 당사의 마케팅 정보를 수신하지 못할 수 있습니다.
+										
+4. 수신동의 변경
+프리딕션 고객센터를 통해 수신동의를 변경(동의/철회)할 수 있습니다
+										
+이용하는 개인정보 항목
+보유 이용 목적
+휴대전화번호, 이메일주소
+혜택정보, 각종 이벤트 정보 등 광고성 적보 제공
+										
+										
+본 약관은 2020년 2월 14일부터 시행합니다.
+									</div>
+								</div>
+								<div class="footer-content">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+
+
+
+
+
+		</div>
+	</section>
+
+	<!-- 기본 하단 부분 -->
+	{% include "template/footer.html" %}
+	<!-- Footer Area End -->
+	<!-- Back to Top Start -->
+	<div class="bottomtotop">
+		<i class="fas fa-chevron-right"></i>
+	</div>
+	<!-- Back to Top End -->
+	<!-- Login Area Start -->
+	{% include "template/login.html" %}
+	<!-- Login Area End -->
+	{% include "template/jsloader.html" %}
+
+
+</body>
+</html>

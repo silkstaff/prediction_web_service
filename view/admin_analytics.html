@@ -1,0 +1,101 @@
+{% extends 'admin/master.html' %}
+{% block body %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+
+
+<div style='width:100%;'>
+    <canvas id="myChart3" width="10" height="4"></canvas>
+</div>
+
+<div style='width:50%; float:left;'>
+    <canvas id="myChart" width="5" height="3"></canvas>
+</div>
+
+
+<div style='width:50%; float: left;'>
+    <canvas id="myChart2" width="5" height="3"></canvas>
+</div>
+
+<script>
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var data = {
+        // The type of chart we want to create
+        type: 'bar',
+        // The data for our dataset
+        data: {
+            labels: ["골드", "은화", "마일리지"],
+            datasets: [{
+                label: "재화 합계",
+                backgroundColor: 'rgb(255, 206, 86, 0.2)',
+                fill:false, // line의 아래쪽을 색칠할 것인가? 
+                borderColor: 'rgb(255, 206, 86, 0.2)',
+                lineTension:0.1, // 값을 높이면, line의 장력이 커짐.
+                data: [{{sum_money[0]}}, {{sum_money[1]}}, {{sum_money[2]}}],
+            }]
+        },
+        // Configuration options go here
+        options: {}
+    }
+    var chart = new Chart(ctx, data);
+
+    var ctx = document.getElementById('myChart2').getContext('2d');
+    var data = {
+        // The type of chart we want to create
+        type: 'bar',
+        // The data for our dataset
+        data: {
+            labels: ["{{betting_gold[1][2]}}", "{{betting_gold[0][2]}}"],
+            datasets: [{
+                label: "(결과 나온것 중)총 배팅 골드",
+                backgroundColor: 'rgb(255, 99, 132)',
+                fill:false, // line의 아래쪽을 색칠할 것인가? 
+                borderColor: 'rgb(255, 99, 132)',
+                lineTension:0.1, // 값을 높이면, line의 장력이 커짐.
+                data: [{{betting_gold[1][0]}}, {{betting_gold[0][0]}}],
+            },
+            {
+                label: "총 당첨 골드",
+                backgroundColor: 'rgb(54, 162, 235, 0.2)',
+                fill:false, // line의 아래쪽을 색칠할 것인가? 
+                borderColor: 'rgb(54, 162, 235, 0.2)',
+                lineTension:0.1, // 값을 높이면, line의 장력이 커짐.
+                data: [{{betting_gold[1][1]}}, {{betting_gold[0][1]}}],
+            },
+            {
+                label: "이익",
+                backgroundColor: 'rgb(75, 192, 192)',
+                fill:false, // line의 아래쪽을 색칠할 것인가? 
+                borderColor: 'rgb(75, 192, 192)',
+                lineTension:0.1, // 값을 높이면, line의 장력이 커짐.
+                data: [{{betting_gold[1][0]}}-{{betting_gold[1][1]}}, {{betting_gold[0][0]}}-{{betting_gold[0][1]}}],
+            }]
+        },
+        // Configuration options go here
+        options: {}
+    }
+    var chart = new Chart(ctx, data);
+
+    var ctx = document.getElementById('myChart3').getContext('2d');
+    var data = {
+        // The type of chart we want to create
+        type: 'line',
+        // The data for our dataset
+        data: {
+            
+            labels: ["{{signup[6][0]}}", "{{signup[5][0]}}", "{{signup[4][0]}}", "{{signup[3][0]}}", "{{signup[2][0]}}", "{{signup[1][0]}}", "{{signup[0][0]}}"],
+            datasets: [{
+                label: "가입자 수",
+                backgroundColor: 'rgb(75, 192, 192)',
+                fill:false, // line의 아래쪽을 색칠할 것인가? 
+                borderColor: 'rgb(75, 192, 192)',
+                lineTension:0.1, // 값을 높이면, line의 장력이 커짐.
+                data: [{{signup[6][1]}},{{signup[5][1]}},{{signup[4][1]}},{{signup[3][1]}},{{signup[2][1]}},{{signup[1][1]}}, {{signup[0][1]}}],
+            }]
+        },
+        // Configuration options go here
+        options: {}
+    }
+    var chart = new Chart(ctx, data);
+
+</script>
+{% endblock %}

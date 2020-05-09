@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+{% include "template/head_css.html" %}
+
+
+</head>
+<body>
+	<!-- 기본 상단 부분 -->
+	{% include "template/preloader.html" %}
+    {% include "template/header.html" %}
+
+	<section class="faq-section">
+		<div class="container">
+			{% include "customer-center/faq/mini-menu.html" %}
+
+		<br>
+		<div class="row">
+		<div class="col-lg-12">
+			<div class="faq-wrapper">
+			<ul class="nav nav-tabs" id="myTab" role="tablist">
+				<li class="nav-item">
+				<a class="nav-link active" id="ticket-tab" data-toggle="tab" href="#ticket" role="tab" aria-controls="ticket" aria-selected="false">회원문의</a>
+				</li>
+				<li class="nav-item">
+				<a class="nav-link" id="banking-tab" data-toggle="tab" href="#banking" role="tab" aria-controls="banking" aria-selected="false">결제/구매문의</a>
+				</li>
+				<li class="nav-item">
+				<a class="nav-link" id="winning-tab" data-toggle="tab" href="#winning" role="tab" aria-controls="winning" aria-selected="false">게임이용</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" id="results-tab" data-toggle="tab" href="#results" role="tab" aria-controls="results" aria-selected="true">서비스문의</a>
+				</li>
+				<li class="nav-item">
+				<a class="nav-link" id="about-tab" data-toggle="tab" href="#about" role="tab" aria-controls="about" aria-selected="false">기타</a>
+				</li>
+			</ul>
+			<div class="tab-content" id="myTabContent">
+				<div class="tab-pane fade" id="ticket" role="tabpanel" aria-labelledby="ticket-tab">
+					<div class="accordion sorteo-accordion" id="accordionExample">
+						<div class="card">
+							<div class="card-header" id="headingOne">
+					<h2 class="mb-0">
+							<button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne"><i class="fa fa-question"></i> 회원가입은 어떻게 하나요?</button>
+						</h2>
+						</div>
+						<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+							<div class="card-body">
+							<p>메인페이지의 로그인창에 ‘회원가입’버튼 클릭 후 회원가입을 위한 정보를 입력하신 후 약관동의 후 휴대폰 인증을 통해 가능합니다.
+							회원가입은 다음과 같은 기준이 존재합니다.<br>
+							<ul>
+								<li>1. 1인 1계정</li>
+								<li>2. 아이디 길이는 6~12글자(영문 혹은 영문, 숫자 조합)</li>
+								<li>3. 비밀번호 길이는 8~12글자(영문, 숫자, 특수문자 조합)</li>
+								<li>4. 닉네임 3글자이상(영문 혹은 한글)</li>
+							</ul>
+							</p>
+							
+							</div>
+						</div>
+						</div>
+						<div class="card">
+						<div class="card-header" id="headingTwo">
+							<h2 class="mb-0">
+							<button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"><i class="fa fa-question"></i> 회원탈퇴는 어떻게 하나요?</button>
+							</h2>
+						</div>
+						<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+							<div class="card-body">
+							<p>내 정보 페이지에서 회원탈퇴가 가능 합니다. 회원탈퇴 시 다음과 같은 주의사항이 존재합니다.<br><br>
+							1. 탈퇴 시 계정의 정보와 은화,골드 등 이용기록은 모두 소멸<br>
+							2. 사행성방지를 위해 외원탈퇴 후 바로 재가입이 불가<br>
+							3. 탈퇴일로부터 30일 후 재가입이 가능 합니다<br></p>
+							</div>
+						</div>
+						</div>
+						<div class="card">
+						<div class="card-header" id="headingThree">
+							<h2 class="mb-0">
+							<button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree"><i class="fa fa-question"></i> 아이디나 비밀번호는 어떻게 찾나요?</button>
+							</h2>
+						</div>
+						<div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+							<div class="card-body">
+							<p>ID/PW 찾기 클릭 후 휴대폰 인증으로 찾으실 수 있습니다.</p>
+							</div>
+						</div>
+						</div>
+						<div class="card">
+						<div class="card-header" id="headingFour">
+							<h2 class="mb-0">
+							<button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour"><i class="fa fa-question"></i> 내 정보는 어떻게 확인할 수 있나요?</button>
+							</h2>
+						</div>
+						<div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionExample">
+							<div class="card-body">
+							<p>로그인 후 마이페이지 창에서 확인 가능합니다. 내 정보 뿐 만 아니라 인벤토리, 은화, 골드, 마일리지를 확인하실 수 있습니다.</p>
+							</div>
+						</div>
+						</div>
+
+					
+					
+					
+					</div>
+					</div>
+					<div class="tab-pane fade" id="banking" role="tabpanel" aria-labelledby="banking-tab">
+					<div class="accordion sorteo-accordion" id="accordionExample2">
+						<div class="card">
+						<div class="card-header" id="headingFive">
+							<h2 class="mb-0">
+							<button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseFive" aria-expanded="true" aria-controls="collapseFive"><i class="fa fa-question"></i> 은화는 어떻게 충전하나요?</button>
+							</h2>
+						</div>
+						<div id="collapseFive" class="collapse show" aria-labelledby="headingFive" data-parent="#accordionExample2">
+							<div class="card-body">
+							<p>
+							충전 버튼을 통해 은화를 충전할 수 있습니다. 결제 수단은 휴대폰, 신용카드, 계좌이체, 무통장 등의 결제 수단이 존재하고 있습니다. </p>
+							</div>
+						</div>
+						</div>
+						<div class="card">
+						<div class="card-header" id="headingSix">
+							<h2 class="mb-0">
+							<button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix"><i class="fa fa-question"></i> 은화의 최대 충전 한도가 있나요?</button>
+							</h2>
+						</div>
+						<div id="collapseSix" class="collapse" aria-labelledby="headingSix" data-parent="#accordionExample2">
+							<div class="card-body">
+							<p>
+								전자금융거래법에 의거 매월 1일부터 말일까지 1개월 동안 구매할 수 있는 금액은 최대 50만원입니다. 충전 한도는 매월 1일 초기화되며, 충전 한도 증액은 별도 가능하지 않은 점 이용 시 참고 바랍니다.
+							</p>
+							</div>
+						</div>
+						</div>
+						
+						
+						
+						<div class="card">
+						<div class="card-header" id="headingSix">
+							<h2 class="mb-0">
+							<button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse-other1" aria-expanded="false" aria-controls="collapseSix"><i class="fa fa-question"></i> 결제창이 뜨지 않습니다.</button>
+							</h2>
+						</div>
+						<div id="collapse-other1" class="collapse" aria-labelledby="headingSix" data-parent="#accordionExample2">
+							<div class="card-body">
+							<p>
+								결제 팝업이 확인되지 않을 경우 브라우저 내 팝업 차단 된 상태일 수 있습니다.
+팝업 차단을 해제하는 방법은 아래와 같이 안내해 드리오니 참고하시기 바랍니다.
+(브라우저 및 브라우저 버전에 따라 차이가 있을 수 있습니다)<br><br>
+
+<strong>[익스플로어 팝업차단 해제 방법]</strong><br><br>
+1. 익스플로어 실행 후 키보드 [F10]키를 누릅니다 > 도구 > 팝업차단 >팝업차단 사용 안함 선택<br>
+2. 익스플로어에서 [F10] > 도구 > 팝업차단 >팝업차단 설정 > 추가 > 허용할 웹사이트 란에 주소 입력<br>
+3. 웹사이트 주소창 아래 팝업차단 알림창 클릭 > 임시로 팝업 허용 또는 항상 허용 선택<br><br>
+
+<strong>[크롬 브라우저 팝업 차단 해제 방법]</strong><br><br>
+​1. 우측 상단 더보기를 누릅니다 > 설정 > 하단 고급을 클릭<br>
+2. [개인정보 및 보안] 에서 콘텐츠 설정 클릭<br>
+3. 팝업 클릭 > 상단에서 설정 허용됨 또는 차단됨을 설정<br>
+							</p>
+							</div>
+						</div>
+						</div>
+						
+						
+						
+						
+						
+						<div class="card">
+						<div class="card-header" id="headingSix">
+							<h2 class="mb-0">
+							<button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse-other2" aria-expanded="false" aria-controls="collapseSix"><i class="fa fa-question"></i> 은화 및 골드 환전 가능한가요?</button>
+							</h2>
+						</div>
+						<div id="collapse-other2" class="collapse" aria-labelledby="headingSix" data-parent="#accordionExample2">
+							<div class="card-body">
+							<p>
+프리딕션은 정식 등급분류를 받은 게임물로서 스포츠 경기 결과를 예측, 참여하는 게임입니다.<br><br>프리딕션 내에서 아이템 구매 후 보너스로 제공되는 게임 참여용 골드를 현금 혹은 그에 준하는 현물로 교환하는 서비스는 존재하지 않습니다.</p>
+							</div>
+						</div>
+						</div>
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+					</div>
+					</div>
+					<div class="tab-pane fade" id="winning" role="tabpanel" aria-labelledby="winning-tab">
+					<div class="accordion sorteo-accordion" id="accordionExample3">
+						<div class="card">
+						<div class="card-header" id="headingSeven">
+							<h2 class="mb-0">
+							<button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseSeven" aria-expanded="true" aria-controls="collapseSeven"><i class="fa fa-question"></i> 프리딕션에서 사용하는 재화는 무엇인가요?</button>
+							</h2>
+						</div>
+						<div id="collapseSeven" class="collapse show" aria-labelledby="headingSeven" data-parent="#accordionExample3">
+							<div class="card-body">
+							<p>
+								프리딕션은 은화, 골드, 마일리지 총 3개의 재화가 존재하고 있으며 아래와 같습니다.<br><br>
+<strong>은화</strong> : 캐시 충전을 통해 획득할 수 있으며, 상점을 통해 아이템을 구매할 수 있습니다.<br>
+<strong>골드</strong> : 승무패 등 적중 게임 참여 시 사용할 수 있습니다.<br>
+<strong>마일리지</strong> : 일일 로그인, 게시판 글 작성, 댓글 작성을 통해 획득할 수 있으며, 마일리지 상점에서 사용할 수 있습니다.<br>
+							</p>
+							</div>
+						</div>
+						</div>
+						<div class="card">
+						<div class="card-header" id="headingEight">
+							<h2 class="mb-0">
+							<button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseEight" aria-expanded="false" aria-controls="collapseEight"><i class="fa fa-question"></i> 해외에서 이용할 수 있나요?</button>
+							</h2>
+						</div>
+						<div id="collapseEight" class="collapse" aria-labelledby="headingEight" data-parent="#accordionExample3">
+							<div class="card-body">
+							<p>프리딕션은 국내 기준으로 스포츠 적중 게임을 서비스 하고 있기 때문에 해외에서 이용은 가능하지 않습니다.</p>
+							</div>
+						</div>
+						</div>
+
+						<div class="card">
+						<div class="card-header" id="headingEight">
+							<h2 class="mb-0">
+							<button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse-other3" aria-expanded="false" aria-controls="collapseEight"><i class="fa fa-question"></i> 배팅경기수와 배팅한도는 어떻게 되나요?</button>
+							</h2>
+						</div>
+						<div id="collapse-other3" class="collapse" aria-labelledby="headingEight" data-parent="#accordionExample3">
+							<div class="card-body">
+							<p>적중 게임 배팅 경기 수는 최소 1게임부터 10게임까지 배팅할 수 있습니다.
+배팅한도는 최대 2억 골드이며, 당첨금액한도는 최대 10억 골드를 초과하여 이용하실 수 없습니다.</p>
+							</div>
+						</div>
+						</div>
+
+
+						<div class="card">
+						<div class="card-header" id="headingEight">
+							<h2 class="mb-0">
+							<button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse-other4" aria-expanded="false" aria-controls="collapseEight"><i class="fa fa-question"></i> 배팅 내역 및 적중 결과는 어디서 확인할 수 있나요?</button>
+							</h2>
+						</div>
+						<div id="collapse-other4" class="collapse" aria-labelledby="headingEight" data-parent="#accordionExample3">
+							<div class="card-body">
+							<p>게임센터 -> 참여내역을 통해 확인하실 수 있습니다.</p>
+							</div>
+						</div>
+						</div>
+
+
+
+						<div class="card">
+						<div class="card-header" id="headingEight">
+							<h2 class="mb-0">
+							<button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse-other5" aria-expanded="false" aria-controls="collapseEight"><i class="fa fa-question"></i> 배팅취소방법은 어떻게 되나요?</button>
+							</h2>
+						</div>
+						<div id="collapse-other5" class="collapse" aria-labelledby="headingEight" data-parent="#accordionExample3">
+							<div class="card-body">
+							<p>배팅취소는 배팅취소 아이템을 통해 취소하실 수 있으며 조건은 배팅 후 10분 이내에 한해 참여내역에서 취소 가능합니다.</p>
+							</div>
+						</div>
+						</div>
+
+
+						<div class="card">
+						<div class="card-header" id="headingEight">
+							<h2 class="mb-0">
+							<button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse-other6" aria-expanded="false" aria-controls="collapseEight"><i class="fa fa-question"></i> 배팅 후 배당률이 변동되었는데, 적중 시 배당금은 어떤 식으로 지급하나요?</button>
+							</h2>
+						</div>
+						<div id="collapse-other6" class="collapse" aria-labelledby="headingEight" data-parent="#accordionExample3">
+							<div class="card-body">
+							<p>배당률은 경기 시작 전까지 변동될 수 있지만, 해당 경기 적중 배당금은 배팅 당시 배당률을 기준으로 합니다.</p>
+							</div>
+						</div>
+						</div>
+
+
+						<div class="card">
+						<div class="card-header" id="headingEight">
+							<h2 class="mb-0">
+							<button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse-other7" aria-expanded="false" aria-controls="collapseEight"><i class="fa fa-question"></i> 배팅 결과는 언제 처리되나요?</button>
+							</h2>
+						</div>
+						<div id="collapse-other7" class="collapse" aria-labelledby="headingEight" data-parent="#accordionExample3">
+							<div class="card-body">
+							<p>배팅한 경기가 모두 종료될 경우 1시간 내로 결과 처리 및 적중 배당금을 지급하고 있습니다.
+특정 경기의 경우 배당금 지급이 지연될 수 있습니다.</p>
+							</div>
+						</div>
+						</div>
+
+
+
+
+
+
+
+
+
+					</div>
+					</div>
+					<div class="tab-pane fade show active" id="results" role="tabpanel" aria-labelledby="results-tab">
+					<div class="accordion sorteo-accordion" id="accordionExample4">
+						<div class="card">
+						<div class="card-header" id="headingNine">
+							<h2 class="mb-0">
+							<button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseNine" aria-expanded="false" aria-controls="collapseNine"><i class="fa fa-question"></i>고객센터란?</button>
+							</h2>
+						</div>
+						<div id="collapseNine" class="collapse" aria-labelledby="headingNine" data-parent="#accordionExample4">
+							<div class="card-body">
+							<p>고객센터에서는 공지사항, 자주묻는질문, 1:1문의를 확인할 수 있습니다.</p>
+							</div>
+						</div>
+						</div>
+						<div class="card">
+						<div class="card-header" id="headingTen">
+							<h2 class="mb-0">
+							<button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTen" aria-expanded="false" aria-controls="collapseTen"><i class="fa fa-question"></i>상점은 어떻게 이용하는건가요?</button>
+							</h2>
+						</div>
+						<div id="collapseTen" class="collapse" aria-labelledby="headingTen" data-parent="#accordionExample4">
+							<div class="card-body">
+							<p>상점을 클릭하면 다양한 아이템이 있습니다. 상점에서 구매한 아이템으로 다양한 서비스를 이용할 수 있습니다.</p>
+							</div>
+						</div>
+						</div>
+						<div class="card">
+						<div class="card-header" id="heading11">
+							<h2 class="mb-0">
+							<button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse11" aria-expanded="true" aria-controls="collapse11"><i class="fa fa-question"></i>회원정보는 어디서 변경할 수 있나요?</button>
+							</h2>
+						</div>
+						<div id="collapse11" class="collapse show" aria-labelledby="heading11" data-parent="#accordionExample4">
+							<div class="card-body">
+							<p>마이페이지->내정보->정보변경에서 정보사항을 변경할 수 있습니다.</p>
+							</div>
+						</div>
+						</div>
+						<div class="card">
+						<div class="card-header" id="heading12">
+							<h2 class="mb-0">
+							<button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse12" aria-expanded="false" aria-controls="collapse12"><i class="fa fa-question"></i>닉네임 변경할 수 있나요?</button>
+							</h2>
+						</div>
+						<div id="collapse12" class="collapse" aria-labelledby="heading12" data-parent="#accordionExample4">
+							<div class="card-body">
+							<p>닉네임 변경권 아이템을 통해 변경할 수 있습니다. 불건전한 닉네임(욕설, 비속어, 운영자 사칭 등)으로 닉네임 사용 중 적발 시 강제로 닉네임이 변경될 수 있습니다.</p>
+							</div>
+						</div>
+						</div>
+						<div class="card">
+						<div class="card-header" id="heading13">
+							<h2 class="mb-0">
+							<button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse13" aria-expanded="false" aria-controls="collapse13"><i class="fa fa-question"></i>사용한 아이템 복구할 수 있나요?</button>
+							</h2>
+						</div>
+						<div id="collapse13" class="collapse" aria-labelledby="heading13" data-parent="#accordionExample4">
+							<div class="card-body">
+							<p>사용한 아이템은 복구할 수 없습니다. 신중한 이용 부탁드립니다.</p>
+							</div>
+						</div>
+						</div>
+					</div>
+					</div>
+					<div class="tab-pane fade" id="about" role="tabpanel" aria-labelledby="about-tab">
+					<div class="accordion sorteo-accordion" id="accordionExample5">
+						<div class="card">
+						<div class="card-header" id="heading14">
+							<h2 class="mb-0">
+							<button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse14" aria-expanded="true" aria-controls="collapse14"><i class="fa fa-question"></i> 홈페이지 오타 및 오류를 발견했어요</button>
+							</h2>
+						</div>
+						<div id="collapse14" class="collapse show" aria-labelledby="heading14" data-parent="#accordionExample5">
+							<div class="card-body">
+							<p>홈페이지에서 발견하신 오타와 오류는 1:1문의를 통해 제보 부탁드립니다!
+감사합니다.</p>
+							</div>
+						</div>
+						</div>
+						<div class="card">
+						<div class="card-header" id="heading15">
+							<h2 class="mb-0">
+							<button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse15" aria-expanded="false" aria-controls="collapse15"><i class="fa fa-question"></i> 게임 버그를 발견했어요.</button>
+							</h2>
+						</div>
+						<div id="collapse15" class="collapse" aria-labelledby="heading15" data-parent="#accordionExample5">
+							<div class="card-body">
+							<p>발견하신 상황에 대해 1:1문의로 보내주시면 최대한 빠른 시일 내 수정하겠습니다.
+가능하시다면, 스크린샷을 함께 첨부 부탁드립니다.
+감사합니다.
+</p>
+							</div>
+						</div>
+						</div>
+					</div>
+					</div>
+					<div class="tab-pane fade" id="general" role="tabpanel" aria-labelledby="general-tab">
+					<div class="accordion sorteo-accordion" id="accordionExample6">
+						<div class="card">
+						<div class="card-header" id="heading16">
+							<h2 class="mb-0">
+							<button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse16" aria-expanded="true" aria-controls="collapse16"><i class="fa fa-question"></i>What is the meaning of business with example?</button>
+							</h2>
+						</div>
+						<div id="collapse16" class="collapse show" aria-labelledby="heading16" data-parent="#accordionExample6">
+							<div class="card-body">
+							<p>scelerisque consectetuer ac a at nunc, in lectus. Ut lectus erat. Sit praesent tellus, ac eget pede risus, urna ante nec tincidunt vel, tincidunt tortor sit lacinia. Enim massa in, porttitor felis justo, aenean habitant velit nunc, maecenas eget magna viverra imperdiet magna tincidunt. Lacinia eleifend luctus ante fermentum, lectus faucibus mi id, orci congue, amet donec erat nisl vestibulum. Ut ac luctus semper curabitur ipsum, odio pretium nec interdum tellus urna.</p>
+							</div>
+						</div>
+						</div>
+						<div class="card">
+						<div class="card-header" id="heading17">
+							<h2 class="mb-0">
+							<button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse17" aria-expanded="false" aria-controls="collapse17"><i class="fa fa-question"></i> What is a business simple definition?</button>
+							</h2>
+						</div>
+						<div id="collapse17" class="collapse" aria-labelledby="heading17" data-parent="#accordionExample6">
+							<div class="card-body">
+							<p>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.</p>
+							</div>
+						</div>
+						</div>
+					</div>
+					</div>
+				</div>
+				</div>
+			</div>
+			</div>
+		</div>
+	</section>
+	
+	
+	<!-- 기본 하단 부분 -->
+	{% include "template/footer.html" %}
+	<!-- Footer Area End -->
+	<!-- Back to Top Start -->
+	<div class="bottomtotop">
+		<i class="fas fa-chevron-right"></i>
+	</div>
+	<!-- Back to Top End -->
+	<!-- Login Area Start -->
+	{% include "template/login.html" %}
+	<!-- Login Area End -->
+	{% include "template/jsloader.html" %}
+
+</body>
+</html>

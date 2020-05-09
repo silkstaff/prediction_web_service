@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+{% include "template/head_css.html" %}
+<style>
+	#delete_bet_btn{
+		float:left;
+		margin:0px;
+	}
+	.mylist_tit.clearfix{
+		margin-top:20px;
+	}
+	.tr_mylist{
+		margin-top:40px;
+		border: 2px solid #a1aed4;
+		padding: 5px;
+	}
+	ul.total{
+		overflow:hidden;
+	}
+	ul.total li{
+		float: left;
+		margin-right: 20px;
+	}
+	ul.total li span{
+		color: rgb(255,238,2);
+	}
+
+	.tr_mylist::-webkit-scrollbar {
+    	display: none;
+	}
+
+/* Hide scrollbar for IE and Edge */
+	.tr_mylist {
+		-ms-overflow-style: none;
+	}
+</style>
+<script>
+	$( document ).ready( function() {
+		$("#delete_bet_btn").click(function(){
+			var no = $('.bet_list_checkbox:checked').parents('div.tr_mylist').data('no')
+			var param = {bet_no:no}
+			if (typeof no=='undefined'){
+				alert('취소할 경기를 선택해주세요.')
+			} else {
+				$.ajax({
+				type:'post',
+				url:'/betting_cancel',
+				data: param,
+				dataType: 'text',
+				success: function(result) {
+					if (result.trim()=='OK'){
+						alert('성공적으로 취소되었습니다.')
+						location.replace('/game_center_betting_list')
+					} else if (result.trim()=='3'){
+						alert('게임 참여 후 10분 이내에만 취소가 가능합니다.')
+					} else if (result.trim()=='2'){
+						alert('하루 참여 취소는 최대 3번 가능합니다.')
+					} else if (result.trim()=='4'){
+						alert('시작된 경기는 베팅취소가 불가능합니다.')
+					}
+				},
+				error: function(a,b,c){
+					alert('하루 최대 3번까지 취소가 가능합니다.')
+				}
+			})
+			}
+		})
+
+		$('.bet_list_checkbox').on('change', function() {
+			$('.bet_list_checkbox').not(this).prop('checked', false);  
+		});
+	})
+</script>
+</head>
+
+<body>
+    {% include "template/preloader.html" %}
+    {% include "template/header.html" %}
+	
+	<section class="cart-area">
+		<div class="container">
+			<ul class="submenu">
+				<li class=""><a href="/game_center">스포츠게임</a></li>
+				<li class="select"><a href="/game_center_betting_list">참여 내역</a></li>
+				<!-- <li class=""><a href="#">게임 소개</a></li> -->
+			</ul>
+
+			<div class="row">
+				<div class="col-lg-12">
+
+					<div class="cart-table-area">
+						<div class="responsive-table">
+							<div class="mylist_tit clearfix">
+								<div class="group_btns_new">
+									<button type="button" id="delete_bet_btn" class="mybtn1">참여취소 (잔여취소권 : {{ betting_cancel_count }}개)</button>
+								</div>
+								<!-- <div class="group_btns_new">
+									{{ betting_cancel_count }}
+								</div> -->
+							</div>
+							{% for data_list in betting_list %}
+							<div class="tr_mylist" data-no="{{ data_list['bet_no'] }}" style='overflow-x:scroll'>
+								<table class="table">
+									<thead>
+										<tr>
+											<th class="pc">경기시간</th>
+											<th>home vs away</th>
+											<th></th>
+											<th>배당률</th>                                                         
+											<th></th>
+											<th>결과</th>
+										</tr>
+									</thead>
+									<tbody>
+										{% for betting_detail in betting_detail_list|selectattr("bet_no", "equalto", data_list['bet_no']) %}
+										<tr>
+											<td class="pc">{{ betting_detail['game_date'].strftime('%Y-%m-%d') }}</td>
+											<td>{{ betting_detail['home_team'] }} vs {{ betting_detail['away_team'] }}</td>
+											<td class="td_my_false">
+												{% if betting_detail['betting']==0 %}
+												<div class="clearfix" style='color:rgb(255,238,2)'>
+												{% else %}
+												<div class="clearfix">
+												{% endif %}
+													{% if betting_detail['game_class']==2 %}
+													<span>언더</span>
+													{% else %}
+													<span>승</span>
+													{% endif %}
+
+													<span>{{ betting_detail['home_bedang'] }}</span>
+												</div>
+											</td>
+											<td class="td_my_normal">
+												{% if betting_detail['betting']==1 %}
+												<div class="clearfix" style='color:rgb(255,238,2)'>
+												{% else %}
+												<div class="clearfix">
+												{% endif %}
+													{% if betting_detail['draw_bedang']==0 %}
+														{% if betting_detail['game_class']==1 %}
+														<span>{{ betting_detail['standard'] }}(H)</span>
+														{% elif betting_detail['game_class']==2 %}
+														<span>{{ betting_detail['standard'] }}(U/O)</span>
+														{% else %}
+														<span>&nbsp;</span>
+														<span>&nbsp;</span>
+														{% endif %}
+													{% else %}
+													<span>무</span>
+													<span>{{ betting_detail['draw_bedang'] }}</span>
+													{% endif %}
+												</div>
+											</td>
+											<td class="td_my_select">
+												{% if betting_detail['betting']==2 %}
+												<div class="clearfix" style='color:rgb(255,238,2)'>
+												{% else %}
+												<div class="clearfix">
+												{% endif %}
+													{% if betting_detail['game_class']==2 %}
+													<span>오버</span>
+													{% else %}
+													<span>패</span>
+													{% endif %}
+
+													<span>{{ betting_detail['away_bedang'] }}</span>
+												</div>
+											</td>
+											{% if betting_detail['result']==0 %}
+												<td style='font-weight: 300px; color: #ffffff'>대기중</td>
+											{% elif betting_detail['result']==1 %}
+												<td style='font-weight: 300px; color: rgb(75,208,129)'>적중</td>
+											{% elif betting_detail['result']==2 %}
+												<td style='font-weight: 300px; color: #ff344d'>미적중</td>
+											{% elif betting_detail['result']==3 %}
+												<td style='font-weight: 300px; color: #ffffff'>적특</td>
+											{% endif %}
+										</tr>
+										{% endfor %}													  
+									</tbody>
+								</table>
+								<ul class="total">
+									<li class="time">
+										<input class="bet_list_checkbox" type="checkbox" name="checkidx"> 
+										참여시간 {{ data_list['bet_date'] }}
+									</li>
+									<li>참여 배당 <span>{{ data_list['bedang']|round(2) }}</span></li>
+									<li>참여 골드 <span>{{ '{:,}'.format( data_list['bet_gold'] ) }}</span></li>
+									<li class="pc">예상적중골드 <span>{{ '{:,}'.format( (data_list['bet_gold']*data_list['bedang'])|round|int ) }}</span></li>
+									<li class="pc">획득골드
+										<span>
+										{% if data_list['result']==1 %}
+											{{ '{:,}'.format( (data_list['bet_gold']*data_list['bedang'])|round|int ) }}
+										{% else %}
+											0
+										{% endif %}
+										</span>
+<!-- 											 
+														{% if data_list['result']==0 %}
+															<span style='color: #ffffff'>대기중</span>
+														{% elif data_list['result']==1 %}
+															<span style='color: rgb(75,208,129)'>적중</span>
+														{% elif data_list['result']==2 %}
+															<span style='color: #ff344d'>미적중</span>
+														{% elif data_list['result']==3 %}
+															<span style='color: #ffffff'>적특</span>
+														{% endif %} -->
+										</li>
+								</ul>
+							</div>
+							{% endfor %}
+						</div>
+					</div>
+
+					<ul class="pagenation">
+						{% if data_dic['now_page']!=1 %}
+							{% if 1>data_dic['prev'] %}
+							<li class="ar">
+								<a href="/game_center_betting_list/page={{data_dic['page_min']}}">
+									<i class="fas fa-arrow-left"></i>
+								</a>
+							</li>
+							{% else %}
+							<li class="ar">
+								<a href="/game_center_betting_list/page={{data_dic['prev']}}">
+									<i class="fas fa-arrow-left"></i>
+								</a>
+							</li>
+							{% endif %}
+						{% endif %}
+
+						{% for page in range(data_dic['page_min'],data_dic['page_max']+1) %}
+							{% if page==data_dic['now_page'] %}
+							<li class='num on'>
+								<a href="/game_center_betting_list/page={{page}}">
+									{{ page }}
+								</a>
+							</li>
+							{% else %}
+							<li class='num'>
+								<a href="/game_center_betting_list/page={{page}}">
+									{{ page }}
+								</a>
+							</li>
+							{% endif %}
+						{% endfor %}
+						{% if data_dic['page_count']>data_dic['now_page'] %}
+							{% if data_dic['next']>data_dic['page_count'] %}
+							<li class="ar">
+								<a href="/game_center_betting_list/page={{data_dic['page_max']}}">
+									<i class="fas fa-arrow-right"></i>
+								</a>
+							</li>
+							{% else %}
+							<li class="ar">
+								<a href="/game_center_betting_list/page={{data_dic['next']}}">
+									<i class="fas fa-arrow-right"></i>
+								</a>
+							</li>
+							{% endif %}
+						{% endif %}
+					</ul>
+
+
+
+				</div>
+			</div>
+
+
+
+		</div>
+	</section>
+
+	<!-- 기본 하단 부분 -->
+	{% include "template/footer.html" %}
+	<!-- Footer Area End -->
+	<!-- Back to Top Start -->
+	<div class="bottomtotop">
+		<i class="fas fa-chevron-right"></i>
+	</div>
+	<!-- Back to Top End -->
+	<!-- Login Area Start -->
+	{% include "template/login.html" %}
+	<!-- Login Area End -->
+	{% include "template/jsloader.html" %}
+
+
+</body>
+</html>

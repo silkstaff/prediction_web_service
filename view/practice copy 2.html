@@ -1,0 +1,19 @@
+<html>
+    <head>
+      <script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-2.2.3.min.js"></script>
+      <script type="text/javascript" src="1.4.3-ydn.db-is-core-qry.js"></script>
+      
+        <script>
+          alert(1)
+          var db = new ydn.db.Storage('db-name');
+          alert(1)
+          db.put('store-name', {message: 'Hello world!'}, 'id1');
+          db.get('store-name', 'id1').always(function(record) {
+            console.log(record);
+          });
+        </script>
+    </head>
+    <body>
+
+    </body>
+</html>

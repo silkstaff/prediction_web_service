@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+	{% include "template/head_css.html" %}
+	<link rel="stylesheet" href="{{ url_for('static', filename='other/bootstrap.css') }}">
+	<!-- <link rel="stylesheet" href="{{ url_for('static', filename='other/fonts.css') }}"> -->
+	<link rel="stylesheet" href="{{ url_for('static', filename='other/style.css') }}">
+	<script>
+		$( document ).ready( function() {
+			$("li.sport-table-wager-button").click(function(){
+				game_id = $(this).data("gameid")
+				$('li.sport-table-wager-button.selected-item[data-gameid="'+game_id+'"]').not(this).removeClass('selected-item')
+				this.classList.toggle('selected-item')
+			})
+
+			$(".sport-table-bonus").click(function(){
+				$('.sport-table-bonus.selected-item').not(this).removeClass('selected-item')
+				this.classList.toggle('selected-item')
+			})
+
+
+		})
+	</script>
+	<style>
+		.sport-table-wager-button.selected-item{
+			background-color: rgb(95,105,165) !important;
+			/* background-color: #a1aed4 !important; */
+			color: #fff !important;
+		}
+		.sport-table-bonus.selected-item{
+			color: #ff344d !important;
+		}
+	</style>
+   <script>
+	   function timeConverter(UNIX_timestamp){
+			var a = new Date(UNIX_timestamp * 1000);
+			var months = ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
+			var year = a.getFullYear();
+			var month = months[a.getMonth()];
+			var date = a.getDate();
+			var hour = a.getHours();
+			if (parseInt(hour)<10){
+				hour='0'+hour}
+			var min = a.getMinutes();
+			if (parseInt(min)<10){
+				min='0'+min}
+			var sec = a.getSeconds();
+			var time = month + ' ' + date + '일 ' + hour + ':' + min ;
+			return time;
+			}
+			function aConverter(UNIX_timestamp){
+			var a = new Date(UNIX_timestamp * 1000);
+			var date = a.getDate();
+			return date;
+			}
+// console.log(timeConverter(1581165000));
+// console.log(timeConverter(1581165000));
+
+	var home_team=[];
+			var away_team=[];
+			var game_id=[];
+			var league_name=[];
+			var sport_name=[];
+			var time=[];
+			var page_num=1;
+			$('#show').html('....loading...');
+			league_array=['10041110','10041101','10041315','10041095','10041809','10041957','10041282','10041109']
+			// ,'10041830','10040498','10040214','10041185'
+			// sport_id=['1','1','1','1','1','1','1','1','18','18','91','91']
+			for(var lid in league_array){
+				$.ajax({
+					// type: "GET",
+					url: "/game_center_proxy/upcoming/sport_id=1"+"&league_id="+league_array[lid].toString(),
+					success:function(data){
+						obj=JSON.parse(data)
+						page_num=Math.ceil(obj.pager.total/50)
+						for(var j=0; j<obj.results.length; j++){
+							if (aConverter(obj.results[j]['time'])==8){
+								home_team.push(obj.results[j]['home']['name'])
+								away_team.push(obj.results[j]['away']['name'])
+								game_id.push(obj.results[j]['id'])
+								league_name.push(obj.results[j]['league']['name'])
+								sport_name.push(obj.results[j]['sport_id'])
+								time.push(obj.results[j]['time'])
+							}
+						}
+					},
+					async: false
+				})
+				for(var j=2; j<page_num+1; j++){
+					$.ajax({
+					url: "/game_center_proxy/upcoming/sport_id=1&page="+j.toString()+"&league_id="+league_array[lid].toString(),
+					success:function(data){
+						obj=JSON.parse(data)
+						for(var j=0; j<obj.results.length; j++){
+							home_team.push(obj.results[j]['home']['name'])
+							away_team.push(obj.results[j]['away']['name'])
+							game_id.push(obj.results[j]['id'])
+							league_name.push(obj.results[j]['league']['name'])
+							sport_name.push(obj.results[j]['sport_id'])
+							time.push(obj.results[j]['time'])
+						}
+					},
+					async: false
+					})
+				}
+			}
+			
+			var win_odds=[]
+			var tie_odds=[]
+			var lose_odds=[]
+			// alert(game_id)
+			for(lid in game_id){
+				$.ajax({
+					url: "/game_center_proxy/prematch/FI="+game_id[lid].toString(),
+					success:function(data){
+						obj=JSON.parse(data)
+						// temp=obj.results[0]['main']['sp']['full_time_result']
+						// for(var key in temp){
+						// 	console.log(temp[key])
+						// }
+						win_odds.push(obj.results[0]['main']['sp']['full_time_result'][0]['odds'])
+						tie_odds.push(obj.results[0]['main']['sp']['full_time_result'][1]['odds'])
+						lose_odds.push(obj.results[0]['main']['sp']['full_time_result'][2]['odds'])
+					},
+					async: false
+					})
+			}
+		  html='<div class="sport-table-header">'+
+			 '<p>National Championship (6)</p>'+
+			 '</div>'
+			 // home_team.length
+		  for(var j=0; j<home_team.length;j++){
+			 html+='<div class="sport-table">'+
+					  '<div class="sport-table-tr">'+
+						 '<div class="row sport-row align-items-center row-15">'+
+							'<div class="col-sm-1 col-md-1 col-lg-1 pc">'+
+							   '<div class="sport-table-icon">'+
+								  '<i class="sports-icon1 far fa-futbol"></i>'+
+								  '</div>'+
+								  '</div>'+
+								  '<div class="col-sm-9 col-md-4 col-lg-3">'+
+									 '<div class="sport-table-title">'+
+										'<div class="sport-table-title-item sport-table-title-item-left mobile">'+
+										   '<span style="font-weight:900;" class="sport-table-title-team">'
+			 html+=home_team[j]+' vs '+away_team[j]
+			 html+='</span>'+
+				   '</div>'+
+				   '<div class="sport-table-title-item sport-table-title-item-left pc" style="flex-direction: row;">'+
+					  '<span class="sport-table-title-team">승무패</span>'+
+					  '</div>'+
+					  '<div class="sport-table-title-item sport-table-title-item-right" style="flex-direction: row;">'+
+						 '<span class="sport-table-title-score">'+
+							timeConverter(time[j])+
+							'</span>'+
+							'</div>'+
+							'</div>'+
+							'</div>'+
+							'<div class="col-sm-9 col-md-4 col-lg-3 mobile">'+
+							   '<div class="sport-table-title">'+
+								  '<div class="sport-table-title-item sport-table-title-item-left">'+
+									 '<span class="sport-table-title-team">승무패</span>'+
+									 '</div>'+
+									 '</div>'+
+									 '</div>'+
+									 '<div class="col-sm-10 col-md-6 col-lg-7">'+
+										'<div class="sport-table-wager">'+
+										   '<li class="sport-table-wager-button" data-toggle="modal" data-target="#sportModal" data-team-name="Real Madrid" data-gameid="3" data-wager-count="1.23">'+
+											  '<span class="pc">'+
+												home_team[j]+
+												 '</span>'+
+												 '<span class="mobile">'+
+													'승'+
+													'</span>'+
+													'<span class="sport-table-wager-button-count">'+
+														win_odds[j]+
+													   '</span>'+
+													   '</li>'+
+													   '<li class="sport-table-wager-button middle" data-toggle="modal" data-target="#sportModal" data-team-name="Draw" data-gameid="3" data-wager-count="13.00">'+
+														  '<span class="mobile">'+
+															 '무'+
+															 '</span>'+
+															 '<span class="sport-table-wager-button-count">'+
+																tie_odds[j]+
+																'</span>'+
+																'</li>'+
+																'<li class="sport-table-wager-button" data-toggle="modal" data-target="#sportModal" data-team-name="Chelsea" data-gameid="3" data-wager-count="34.25">'+
+																   '<span class="mobile">'+
+																	  '패'+
+																	  '</span>'+
+																	  '<span class="sport-table-wager-button-count">'+
+																		 lose_odds[j]+
+																		 '</span>'+
+																		 '<span class="pc">'+
+																			away_team[j]+
+																			'</span>'+
+																			'</li>'+
+																			'</div>'+
+																			'</div>'+
+																			'<div class="col-sm-2 col-md-1 col-lg-1">'+
+																			   '<div class="sport-table-bonus">'+
+																				  '<span class="sport-table-bonus-count">+58</span>'+
+																				  '</div>'+
+																				  '</div>'+
+																				  '</div>'+
+																				  '</div>'+
+																			   '</div>'
+		  }
+		  // document.write(html)
+		  // $('#sdfsdfsdf').append(html)
+		  // $("p").html("Hello <b>world!</b>");
+		  console.log(html)
+	$(document).ready(function(){
+	  $("#fuck").html(html);
+	});
+	   </script>
+</head>
+<body>
+	<!-- 기본 상단 부분 -->
+    {% include "template/preloader.html" %}
+    {% include "template/header.html" %}
+	<!-- {% include "template/flash_popup.html" %} -->
+
+	<section class="help-section writter-artical-details">
+		<div class="container">
+
+			<ul class="submenu">
+				<li class="select"><a href="#">스포츠게임</a></li>
+				<li class=""><a href="#">참여 내역</a></li>
+				<li class=""><a href="#">게임 소개</a></li>
+			</ul>
+
+			<div class="row isotope-wrap row-30">
+				<!-- Isotope Filters-->
+				<div class="col-lg-12">
+				  <div class="isotope-filters isotope-filters-horizontal">
+					<button class="isotope-filters-toggle button" data-custom-toggle="#isotope-filters" data-custom-toggle-hide-on-blur="true" data-custom-toggle-disable-on-blur="true">Select<span class="caret"></span></button>
+					<ul class="isotope-filters-list" id="isotope-filters">
+						
+					  <li class="isotope-filters-list-item">
+						  <a class="isotope-filters-list-link active" data-isotope-filter="*" data-isotope-group="gallery" href="#">
+							  <span class="isotope-filters-list-img">
+								  <i class="sports-icon fas fa-trophy"></i>
+								</span>
+								<span class="isotope-filters-list-text">전체</span>
+								<span class="isotope-filters-list-count">29</span>
+							</a>
+						</li>
+
+					  <li class="isotope-filters-list-item">
+						  <a class="isotope-filters-list-link" data-isotope-filter="football" data-isotope-group="gallery" href="#">
+							  <span class="isotope-filters-list-img">
+							  	<i class="sports-icon far fa-futbol"></i>
+							  </span>
+							  <span class="isotope-filters-list-text">축구</span>
+							  <span class="isotope-filters-list-count">6</span>
+							</a>
+						</li>
+
+					  <li class="isotope-filters-list-item">
+						  <a class="isotope-filters-list-link" data-isotope-filter="basketball" data-isotope-group="gallery" href="#">
+							  <span class="isotope-filters-list-img">
+								 <i class="sports-icon fas fa-basketball-ball"></i>
+							  </span>
+							  <span class="isotope-filters-list-text">농구</span>
+							  <span class="isotope-filters-list-count">4</span>
+							</a>
+						</li>
+
+					  <li class="isotope-filters-list-item">
+						  <a class="isotope-filters-list-link" data-isotope-filter="volleyball" data-isotope-group="gallery" href="#">
+							  <span class="isotope-filters-list-img">
+								<i class="sports-icon fas fa-volleyball-ball"></i>
+								</span>
+								<span class="isotope-filters-list-text">배구</span>
+								<span class="isotope-filters-list-count">3</span>
+							</a>
+						</li>
+					</ul>
+				  </div>
+				</div>
+				<!-- Isotope Content-->
+				<div class="col-lg-12">
+				  <div class="row isotope row-30" style="margin-left:0px; margin-right:0px;" data-isotope-layout="masonry" data-column-class=".col-1" data-isotope-group="gallery">
+					<div class="col-1 isotope-item isotope-sizer"></div>
+					<!-- Football-->
+					<div class="col-lg-12 isotope-item" style="padding:0" data-filter="football" id="fuck">
+					</div>
+					
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- 기본 하단 부분 -->
+	{% include "template/footer.html" %}
+	<!-- Footer Area End -->
+	<!-- Back to Top Start -->
+	<div class="bottomtotop">
+		<i class="fas fa-chevron-right"></i>
+	</div>
+	<!-- Back to Top End -->
+	<!-- Login Area Start -->
+	{% include "template/login.html" %}
+	<!-- Login Area End -->
+	{% include "template/jsloader.html" %}
+</body>
+</html>

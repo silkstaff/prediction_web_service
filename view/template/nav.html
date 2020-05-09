@@ -1,0 +1,114 @@
+
+<nav class="navbar navbar-expand-lg navbar-light">
+	<a class="navbar-brand" href="/"> <img
+		src="{{ url_for('static',filename='assets/images/logo.png') }}" id='logo' alt="">
+	</a>
+	<button class="navbar-toggler" type="button" data-toggle="collapse"
+		data-target="#main_menu" aria-controls="main_menu"
+		aria-expanded="false" aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"></span>
+	</button>
+	<div class="collapse navbar-collapse fixed-height" id="main_menu">
+		<ul class="navbar-nav ml-auto">
+
+			<li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" role="button"
+				data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					<i class="far fa-futbol"></i> 게임센터
+					<div class="mr-hover-effect"></div>
+			</a>
+				<ul class="dropdown-menu">
+					<li><a class="dropdown-item" href="/game_center">
+							스포츠게임</a></li>
+					
+					{% if session['login']=='YES' %}
+					<li><a class="dropdown-item" href="/game_center_betting_list">
+						참여 내역</a></li>
+					{% endif %}
+
+
+					<!-- <li>
+						<a class="dropdown-item" href="gamecenter-pastlist.html">
+							게임 소개
+						</a>
+					</li> -->
+				</ul></li>
+
+			<li class="nav-item dropdown"><a
+				class="nav-link dropdown-toggle" href="#" role="button"
+				data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					<i class="fas fa-clipboard-list"></i> 커뮤니티
+					<div class="mr-hover-effect"></div>
+			</a>
+				<ul class="dropdown-menu">
+					<li><a class="dropdown-item" href="/board_list/board=1/page=1">
+							분석게시판</a></li>
+					<li><a class="dropdown-item" href="/board_list/board=0/page=1">
+							자유게시판</a></li>
+				</ul></li>
+
+
+
+			<li class="nav-item dropdown"><a
+				class="nav-link dropdown-toggle" href="#" role="button"
+				data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					<i class="fas fa-baby-carriage"></i> 상점
+					<div class="mr-hover-effect"></div>
+			</a>
+				<ul class="dropdown-menu">
+					<li><a class="dropdown-item" href="/store/type=0"> 
+						은화 상점</a></li>
+					<li><a class="dropdown-item" href="/store/type=1">
+						마일리지 상점</a></li>
+					<li><a class="dropdown-item" href="#">
+						은화 충전</a></li>
+				</ul></li>
+
+			<li class="nav-item dropdown"><a
+				class="nav-link dropdown-toggle" href="#" role="button"
+				data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					<i class="fas fa-headset"></i> 고객센터
+					<div class="mr-hover-effect"></div>
+			</a>
+				<ul class="dropdown-menu">
+					<li><a class="dropdown-item" href="/board_list/board=2/page=1">
+							공지사항</a></li>
+					<li><a class="dropdown-item" href="/faq">
+							FAQ</a></li>
+					{% if session['login']=='YES' %}
+					<li><a class="dropdown-item" href="/board_list/board=3/page=1">
+							1대 1문의</a></li>
+					{% endif %}
+				</ul></li>
+
+			{% if session['login'] == 'YES' %}
+			<li class="nav-item dropdown">
+				<a class="nav-link dropdown-toggle" href="#"  role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					<i class="fas fa-user-secret"></i>
+					마이페이지
+					<div class="mr-hover-effect"></div>
+				</a>
+				<ul class="dropdown-menu" >
+					<li><a class="dropdown-item" href="/my_page"> 내정보</a></li>
+					<li><a class="dropdown-item" href="/my_inventory"> 인벤토리</a></li>
+					<li><a class="dropdown-item" href="/usage_history/type=0"> 은화</a></li>
+					<li><a class="dropdown-item" href="/usage_history/type=1"> 골드</a></li>
+					<li><a class="dropdown-item" href="/usage_history/type=2"> 마일리지</a></li>
+				</ul>
+			</li>
+			{% endif %}
+		</ul>
+
+
+		{% if session['login'] == 'YES' %}
+		<a href="/logout" type="button" class="mybtn1">
+				<!-- onclick="logout_pro()"> -->
+				로그아웃</a>
+		{% else %}
+
+		<a href="#" class="mybtn1" data-toggle="modal" data-target="#login">
+			로그인</a>
+		
+		{% endif %}
+		
+	</div>
+</nav>
