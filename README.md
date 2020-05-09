@@ -1,2 +1,11 @@
 # prediction_web_service
-prediction_1st_project
+
+## 개발환경
+Python 3.7 ver
+RDS(My sql)
+HTML
+AJAX
+UBUNTU (AWS)
+
+# 세팅
+sudo pip3 install python3
