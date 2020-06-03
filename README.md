@@ -23,3 +23,9 @@ $ sudo python3 main.py
 ## 프로젝트 설명
 * 리얼타임 스포츠 베팅 시뮬레이션 웹사이트 개발
 - 해외 배당 API bets365 활용
+
+## 역할
+* 프론트엔드: 송근일 Geunill Song
+* 백엔드: 이인섭 Insub Lee
+* DB: 고지형(본인) Jiheyong Ko
+* 기획: 권기대 Kidae Kwon
